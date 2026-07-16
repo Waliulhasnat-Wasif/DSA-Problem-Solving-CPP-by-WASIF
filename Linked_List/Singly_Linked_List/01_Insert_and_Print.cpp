@@ -46,7 +46,7 @@ int main()
 {
     Node *head = NULL;
     Node *tail = NULL;
-
+    // printLinkedList(head);
     insertAtTail(head, tail, 20);
     insertAtTail(head, tail, 30);
     insertAtTail(head, tail, 40);
