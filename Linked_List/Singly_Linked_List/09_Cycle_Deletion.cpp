@@ -184,6 +184,17 @@ void printLinkedList(Node *head)
     }
 }
 
+void deleteLinkedList(Node *head)
+{
+    Node *curr = head;
+    while (curr != nullptr)
+    {
+        Node *deleteNode = curr;
+        curr = curr->next;
+        delete deleteNode;
+    }
+}
+
 int main()
 {
     Node *head = NULL;
@@ -209,6 +220,9 @@ int main()
 
     cout << "Applying here the cycle removal function" << endl;
     removeCycle(head);
+
+    // prevention for memory leak
+    deleteLinkedList(head);
 
     return 0;
 }

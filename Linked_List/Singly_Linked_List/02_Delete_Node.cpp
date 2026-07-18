@@ -96,6 +96,17 @@ void printLinkedList(Node *head)
     cout << "NULL" << endl;
 }
 
+void deleteLinkedList(Node *head)
+{
+    Node *curr = head;
+    while (curr != nullptr)
+    {
+        Node *deleteNode = curr;
+        curr = curr->next;
+        delete deleteNode;
+    }
+}
+
 int main()
 {
     Node *head = NULL;
@@ -121,6 +132,9 @@ int main()
     cout << "After deleting index 2: ";
     deleteFromIndex(head, tail, 2);
     printLinkedList(head);
+
+    // prevention for memory leak
+    deleteLinkedList(head);
 
     return 0;
 }

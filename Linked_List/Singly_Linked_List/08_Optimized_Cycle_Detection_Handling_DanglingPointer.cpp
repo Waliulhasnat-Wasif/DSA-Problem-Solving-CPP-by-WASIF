@@ -164,6 +164,28 @@ void printLinkedList(Node *head)
     }
 }
 
+void deleteLinkedList(Node *head)
+{
+    Node *startCycle = detectCycleStart(head);
+    if (startCycle != nullptr)
+    {
+        Node *temp = startCycle;
+        while (temp->next != startCycle)
+        {
+            temp = temp->next;
+        }
+        temp->next = nullptr;
+    }
+
+    Node *curr = head;
+    while (curr != nullptr)
+    {
+        Node *deleteNode = curr;
+        curr = curr->next;
+        delete deleteNode;
+    }
+}
+
 int main()
 {
     Node *head = NULL;
@@ -182,6 +204,9 @@ int main()
     cout << "After creating cycle: ";
     createCycle(head, tail, 2, 4);
     printLinkedList(head);
+
+    // prevention for memory leak
+    deleteLinkedList(head);
 
     return 0;
 }

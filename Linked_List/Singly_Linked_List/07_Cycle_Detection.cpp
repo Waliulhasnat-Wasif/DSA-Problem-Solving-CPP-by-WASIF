@@ -138,6 +138,53 @@ void printLinkedList(Node *head)
     cout << "NULL" << endl;
 }
 
+void deleteLinkedList(Node *head)
+{
+    if (head == nullptr)
+        return;
+
+    Node *fast = head;
+    Node *slow = head;
+    bool hasCycle = false;
+
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast)
+        {
+            hasCycle = true;
+            break;
+        }
+    }
+
+    if (hasCycle)
+    {
+        fast = head;
+        while (fast != slow)
+        {
+            fast = fast->next;
+            slow = slow->next;
+        }
+
+        Node *temp = slow;
+        while (temp->next != slow)
+        {
+            temp = temp->next;
+        }
+
+        temp->next = nullptr;
+    }
+
+    Node *curr = head;
+    while (curr != nullptr)
+    {
+        Node *deleteNode = curr;
+        curr = curr->next;
+        delete deleteNode;
+    }
+}
+
 int main()
 {
     Node *head = NULL;
@@ -163,6 +210,9 @@ int main()
 
     if (hasCycle(head))
         cout << "A cycle detected..." << endl;
+
+    // prevention for memory leak
+    deleteLinkedList(head);
 
     return 0;
 }

@@ -69,23 +69,27 @@ Node *mergeTwoSortedList(Node *list1, Node *list2)
     return mergedHead;
 }
 
-Node *mergeTwoSortedListRecursive(Node *list1, Node *list2)
+Node *sortListRecursive(Node *head)
 {
-    if (list1 == nullptr)
-        return list2;
-    if (list2 == nullptr)
-        return list1;
-
-    if (list1->val <= list2->val)
+    if (head == nullptr || head->next == nullptr)
     {
-        Node *mergedRemaining = mergeTwoSortedListRecursive(list1->next, list2);
-        list1->next = mergedRemaining;
-        return list1;
+        return head;
     }
 
-    Node *mergedRemaining = mergeTwoSortedListRecursive(list1, list2->next);
-    list2->next = mergedRemaining;
-    return list2;
+    Node *slow = head;
+    Node *fast = head->next;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    Node *rightHead = slow->next;
+    slow->next = nullptr;
+
+    Node *leftSorted = sortListRecursive(head);
+    Node *rightSorted = sortListRecursive(rightHead);
+
+    return mergeTwoSortedList(leftSorted, rightSorted);
 }
 
 void printLinkedList(Node *head)
@@ -112,37 +116,27 @@ void deleteLinkedList(Node *head)
 
 int main()
 {
-    Node *head1 = nullptr;
-    Node *tail1 = nullptr;
-    Node *head2 = nullptr;
-    Node *tail2 = nullptr;
+    Node *head = nullptr;
+    Node *tail = nullptr;
 
-    insertAtTail(head1, tail1, 10);
-    insertAtTail(head1, tail1, 20);
-    insertAtTail(head1, tail1, 30);
-    insertAtTail(head1, tail1, 40);
-    insertAtTail(head1, tail1, 50);
-    insertAtTail(head1, tail1, 60);
+    insertAtTail(head, tail, 10);
+    insertAtTail(head, tail, 8);
+    insertAtTail(head, tail, 7);
+    insertAtTail(head, tail, 15);
+    insertAtTail(head, tail, 20);
+    insertAtTail(head, tail, 18);
+    insertAtTail(head, tail, 30);
+    insertAtTail(head, tail, 22);
 
-    cout << "The Sorted List No 1 is: ";
-    printLinkedList(head1);
+    cout << "The Unsorted List No is: ";
+    printLinkedList(head);
 
-    insertAtTail(head2, tail2, 15);
-    insertAtTail(head2, tail2, 25);
-    insertAtTail(head2, tail2, 35);
-    insertAtTail(head2, tail2, 45);
-    insertAtTail(head2, tail2, 65);
-
-    cout << "The Sorted List No 2 is: ";
-    printLinkedList(head2);
-
-    cout << "After merging the two sorted list: ";
-    // Node *mergedHead = mergeTwoSortedList(head1, head2);
-    Node *mergedHead = mergeTwoSortedListRecursive(head1, head2);
-    printLinkedList(mergedHead);
+    cout << "After sorted the list is: ";
+    Node *newHead = sortListRecursive(head);
+    printLinkedList(newHead);
 
     // prevention for memory leak
-    deleteLinkedList(mergedHead);
+    deleteLinkedList(newHead);
 
     return 0;
 }
