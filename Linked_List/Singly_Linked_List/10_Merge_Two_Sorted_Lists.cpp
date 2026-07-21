@@ -31,13 +31,8 @@ void insertAtTail(Node *&head, Node *&tail, int val)
 
 Node *mergeTwoSortedList(Node *list1, Node *list2)
 {
-    if (list1 == nullptr)
-        return list2;
-    if (list2 == nullptr)
-        return list1;
-
-    Node *dummy = new Node(-1);
-    Node *tail = dummy;
+    Node dummy(-1);
+    Node *tail = &dummy;
 
     while (list1 != nullptr && list2 != nullptr)
     {
@@ -54,19 +49,9 @@ Node *mergeTwoSortedList(Node *list1, Node *list2)
         tail = tail->next;
     }
 
-    if (list1 != nullptr)
-    {
-        tail->next = list1;
-    }
-    else
-    {
-        tail->next = list2;
-    }
+    tail->next = (list1 != nullptr) ? list1 : list2;
 
-    Node *mergedHead = dummy->next;
-    delete dummy;
-
-    return mergedHead;
+    return dummy.next;
 }
 
 Node *mergeTwoSortedListRecursive(Node *list1, Node *list2)
@@ -137,8 +122,8 @@ int main()
     printLinkedList(head2);
 
     cout << "After merging the two sorted list: ";
-    // Node *mergedHead = mergeTwoSortedList(head1, head2);
-    Node *mergedHead = mergeTwoSortedListRecursive(head1, head2);
+    Node *mergedHead = mergeTwoSortedList(head1, head2);
+    // Node *mergedHead = mergeTwoSortedListRecursive(head1, head2);
     printLinkedList(mergedHead);
 
     // prevention for memory leak

@@ -29,7 +29,31 @@ void insertAtTail(Node *&head, Node *&tail, int val)
     tail = newNode;
 }
 
-Node *mergeTwoSortedList(Node *list1, Node *list2)
+int getLength(Node *head)
+{
+    int len = 0;
+    while (head != nullptr)
+    {
+        len++;
+        head = head->next;
+    }
+    return len;
+}
+
+Node *split(Node *head, int step)
+{
+    if (head == nullptr)
+        return nullptr;
+    for (int i = 1; head->next != nullptr && i < step; i++)
+    {
+        head = head->next;
+    }
+    Node *rest = head->next;
+    head->next = nullptr;
+    return rest;
+}
+
+Node *mergeTwoSortedList(Node *list1, Node *list2, Node *&tailRef)
 {
     Node dummy(-1);
     Node *tail = &dummy;
@@ -51,30 +75,42 @@ Node *mergeTwoSortedList(Node *list1, Node *list2)
 
     tail->next = (list1 != nullptr) ? list1 : list2;
 
+    while (tail->next != nullptr)
+    {
+        tail = tail->next;
+    }
+    tailRef = tail;
+
     return dummy.next;
 }
 
-Node *sortListRecursive(Node *head)
+Node *sortListIterative(Node *head)
 {
     if (head == nullptr || head->next == nullptr)
-    {
         return head;
-    }
 
-    Node *slow = head;
-    Node *fast = head->next;
-    while (fast != nullptr && fast->next != nullptr)
+    int length = getLength(head);
+    Node dummy(-1);
+    dummy.next = head;
+
+    for (int step = 1; step < length; step *= 2)
     {
-        slow = slow->next;
-        fast = fast->next->next;
+        Node *curr = dummy.next;
+        Node *prevTail = &dummy;
+
+        while (curr != nullptr)
+        {
+            Node *left = curr;
+            Node *right = split(left, step);
+            curr = split(right, step);
+
+            Node *mergedTail = nullptr;
+            prevTail->next = mergeTwoSortedList(left, right, mergedTail);
+            prevTail = mergedTail;
+        }
     }
-    Node *rightHead = slow->next;
-    slow->next = nullptr;
 
-    Node *leftSorted = sortListRecursive(head);
-    Node *rightSorted = sortListRecursive(rightHead);
-
-    return mergeTwoSortedList(leftSorted, rightSorted);
+    return dummy.next;
 }
 
 void printLinkedList(Node *head)
@@ -117,7 +153,7 @@ int main()
     printLinkedList(head);
 
     cout << "After sorted the list is: ";
-    Node *newHead = sortListRecursive(head);
+    Node *newHead = sortListIterative(head);
     printLinkedList(newHead);
 
     // prevention for memory leak
