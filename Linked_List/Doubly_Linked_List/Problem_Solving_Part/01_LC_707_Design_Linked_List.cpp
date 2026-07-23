@@ -12,7 +12,7 @@ private:
         Node *prev;
         Node *next;
 
-        Node(int v)
+        explicit Node(int v)
         {
             val = v;
             prev = nullptr;

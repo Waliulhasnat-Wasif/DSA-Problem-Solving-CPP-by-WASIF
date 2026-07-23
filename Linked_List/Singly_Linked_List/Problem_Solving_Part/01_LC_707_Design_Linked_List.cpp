@@ -11,7 +11,7 @@ private:
         int val;
         Node *next;
 
-        Node(int v)
+        explicit Node(int v)
         {
             val = v;
             next = nullptr;
