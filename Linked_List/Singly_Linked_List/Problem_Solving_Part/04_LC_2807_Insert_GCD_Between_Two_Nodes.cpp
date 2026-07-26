@@ -109,18 +109,16 @@ void deleteLinkedList(ListNode *head)
 
 void runTestCase(const vector<int> &input, const string &testName)
 {
-    Solution sol;
-
     cout << "Test case: " << testName << "\n";
 
     ListNode *head = createLinkedList(input);
     cout << "Original List: ";
     printLinkedList(head);
 
+    Solution sol;
     ListNode *resultHead = sol.insertGreatestCommonDivisors(head);
     cout << "Modified List: ";
     printLinkedList(resultHead);
-
     cout << string(60, '-') << "\n";
 
     deleteLinkedList(resultHead);

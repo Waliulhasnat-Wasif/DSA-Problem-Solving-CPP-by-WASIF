@@ -62,23 +62,27 @@ void deleteLinkedList(ListNode *head)
 
 void runTestCase(const vector<int> &input, int expectedOutput, const string &testName)
 {
-    Solution sol;
     ListNode *head = createLinkedList(input);
-
+    Solution sol;
     int result = sol.getDecimalValue(head);
 
     cout << "Test Case: " << testName << "\n";
     cout << "Input bits: ";
-
     for (int bit : input)
+    {
         cout << bit;
+    }
 
     cout << "\nOutput: " << result << " | Expected: " << expectedOutput;
 
     if (result == expectedOutput)
-        cout << " -> [PASS] \n";
+    {
+        cout << " -> [PASS]\n";
+    }
     else
-        cout << " -> [FAIL] \n";
+    {
+        cout << " -> [FAIL]\n";
+    }
 
     cout << string(40, '-') << "\n";
 

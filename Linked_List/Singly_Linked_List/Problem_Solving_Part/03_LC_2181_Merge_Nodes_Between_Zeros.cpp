@@ -103,13 +103,12 @@ void deleteLinkedList(ListNode *head)
 
 void runTestCase(const vector<int> &input, const string &testName)
 {
-    Solution sol;
-
     cout << "Test Case: " << testName << "\n";
     ListNode *head = createLinkedList(input);
     cout << "Original List: ";
     printLinkedList(head);
 
+    Solution sol;
     ListNode *resultHead = sol.mergeNodes(head);
     cout << "Modified List: ";
     printLinkedList(resultHead);

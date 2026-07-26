@@ -19,20 +19,17 @@ struct ListNode
 class Solution
 {
 public:
-    ListNode *removeElements(ListNode *head, int val)
+    ListNode *deleteDuplicates(ListNode *head)
     {
-        ListNode dummy(-1);
-        dummy.next = head;
+        ListNode *current = head;
 
-        ListNode *current = &dummy;
-
-        while (current->next != nullptr)
+        while (current != nullptr && current->next != nullptr)
         {
-            if (current->next->val == val)
+            if (current->val == current->next->val)
             {
-                ListNode *toDelete = current->next;
-                current->next = toDelete->next;
-                delete toDelete;
+                ListNode *duplicateNode = current->next;
+                current->next = duplicateNode->next;
+                delete duplicateNode;
             }
             else
             {
@@ -40,7 +37,7 @@ public:
             }
         }
 
-        return dummy.next;
+        return head;
     }
 };
 
@@ -94,17 +91,16 @@ void deleteLinkedList(ListNode *head)
     }
 }
 
-void runTestCase(const vector<int> &input, int targetVal, const string &testName)
+void runTestCase(const vector<int> &input, const string &testName)
 {
     cout << "Test Case: " << testName << "\n";
 
     ListNode *head = createLinkedList(input);
     cout << "Original List : ";
     printLinkedList(head);
-    cout << "Target Value  : " << targetVal << "\n";
 
     Solution sol;
-    ListNode *resultHead = sol.removeElements(head, targetVal);
+    ListNode *resultHead = sol.deleteDuplicates(head);
     cout << "Modified List : ";
     printLinkedList(resultHead);
     cout << string(50, '-') << "\n";
@@ -114,12 +110,14 @@ void runTestCase(const vector<int> &input, int targetVal, const string &testName
 
 int main()
 {
-    cout << "--- Testing LeetCode 203: Remove Linked List Elements ---\n\n";
+    cout << "--- Testing LeetCode 83: Remove Duplicates from Sorted List ---\n\n";
 
-    runTestCase({1, 2, 6, 3, 4, 5, 6}, 6, "Example 1 (Multiple targets)");
-    runTestCase({}, 1, "Example 2 (Empty list)");
-    runTestCase({7, 7, 7, 7}, 7, "Example 3 (All targets)");
-    runTestCase({2, 2, 3, 4}, 2, "Target at head");
+    runTestCase({1, 1, 2}, "Example 1 (Standard)");
+    runTestCase({1, 1, 2, 3, 3}, "Example 2 (Multiple Duplicates)");
+    runTestCase({}, "Edge Case 1 (Empty List)");
+    runTestCase({1, 1, 1, 1, 1}, "Edge Case 2 (All Identical)");
+    runTestCase({1, 2, 3, 4, 5}, "Edge Case 3 (No Duplicates)");
+    runTestCase({-10, -10, -5, 0, 0}, "Edge Case 4 (Negative Numbers)");
 
     return 0;
 }
