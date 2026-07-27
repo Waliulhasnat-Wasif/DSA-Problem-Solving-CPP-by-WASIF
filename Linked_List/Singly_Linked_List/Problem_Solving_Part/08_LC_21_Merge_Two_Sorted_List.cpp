@@ -44,6 +44,30 @@ public:
 
         return dummy.next;
     }
+
+    ListNode *mergeTwoListsRecursive(ListNode *list1, ListNode *list2)
+    {
+        if (list1 == nullptr)
+        {
+            return list2;
+        }
+
+        if (list2 == nullptr)
+        {
+            return list1;
+        }
+
+        if (list1->val <= list2->val)
+        {
+            list1->next = mergeTwoListsRecursive(list1->next, list2);
+            return list1;
+        }
+        else
+        {
+            list2->next = mergeTwoListsRecursive(list2->next, list1);
+            return list2;
+        }
+    }
 };
 
 ListNode *createLinkedList(const vector<int> &nums)
@@ -112,7 +136,8 @@ void runTestCase(const vector<int> &nums1, const vector<int> &nums2, const strin
     printLinkedList(list2);
 
     Solution sol;
-    ListNode *mergedHead = sol.mergeTwoLists(list1, list2);
+    // ListNode *mergedHead = sol.mergeTwoLists(list1, list2);
+    ListNode *mergedHead = sol.mergeTwoListsRecursive(list1, list2);
 
     cout << "Merged : ";
     printLinkedList(mergedHead);
