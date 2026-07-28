@@ -19,7 +19,7 @@ struct ListNode
 class Solution
 {
 public:
-    bool hasCycleHash(ListNode *head)
+    ListNode *detectCycleHash(ListNode *head)
     {
         unordered_set<ListNode *> visitedNodes;
         ListNode *current = head;
@@ -28,17 +28,17 @@ public:
         {
             if (visitedNodes.find(current) != visitedNodes.end())
             {
-                return true;
+                return current;
             }
 
             visitedNodes.insert(current);
             current = current->next;
         }
 
-        return false;
+        return nullptr;
     }
 
-    bool hasCycle(ListNode *head)
+    ListNode *detectCycle(ListNode *head)
     {
         ListNode *slow = head;
         ListNode *fast = head;
@@ -50,11 +50,19 @@ public:
 
             if (slow == fast)
             {
-                return true;
+                slow = head;
+
+                while (slow != fast)
+                {
+                    slow = slow->next;
+                    fast = fast->next;
+                }
+
+                return slow;
             }
         }
 
-        return false;
+        return nullptr;
     }
 };
 
@@ -86,6 +94,22 @@ ListNode *createLinkedListWithCycle(const vector<int> &nums, int pos)
     }
 
     return head;
+}
+
+ListNode *getNodeAtIndex(ListNode *head, int index)
+{
+    if (index < 0)
+    {
+        return nullptr;
+    }
+
+    ListNode *current = head;
+    for (int i = 0; i < index && current != nullptr; i++)
+    {
+        current = current->next;
+    }
+
+    return current;
 }
 
 void printLinkedListSafely(ListNode *head)
@@ -142,25 +166,30 @@ void deleteLinkedListSafely(ListNode *head)
     }
 }
 
-void runTestCase(const vector<int> &input, int pos, bool expected, const string &testName)
+void runTestCase(const vector<int> &input, int pos, const string &testName)
 {
     Solution sol;
 
     cout << "Test Case: " << testName << "\n";
 
     ListNode *head = createLinkedListWithCycle(input, pos);
+    ListNode *expectedNode = getNodeAtIndex(head, pos);
 
     cout << "Original List : ";
     printLinkedListSafely(head);
 
-    // bool result = sol.hasCycle(head);
-    bool result = sol.hasCycleHash(head);
+    ListNode *resultNode = sol.detectCycle(head);
+
+    string expectedStr =
+        (expectedNode != nullptr) ? std::to_string(expectedNode->val) : "null";
+    string resultStr =
+        (resultNode != nullptr) ? std::to_string(resultNode->val) : "null";
 
     cout << "Input sizes: " << input.size() << ", Pos: " << pos << "\n";
-    cout << "Output: " << (result ? "true" : "false")
-         << " | Expected: " << (expected ? "true" : "false");
+    cout << "Output points to val: " << resultStr
+         << " | Expected points to val: " << expectedStr;
 
-    if (result == expected)
+    if (resultNode == expectedNode)
     {
         cout << " -> [PASS]\n";
     }
@@ -176,12 +205,13 @@ void runTestCase(const vector<int> &input, int pos, bool expected, const string 
 
 int main()
 {
-    cout << "--- Testing LeetCode 141: Linked List Cycle ---\n\n";
+    cout << "--- Testing LeetCode 142: Linked List Cycle II ---\n\n";
 
-    runTestCase({3, 2, 0, -4}, 1, true, "Example 1 (Cycle in middle)");
-    runTestCase({1, 2}, 0, true, "Example 2 (Cycle at head)");
-    runTestCase({1}, -1, false, "Example 3 (No cycle)");
-    runTestCase({}, -1, false, "Edge Case (Empty List)");
+    runTestCase({3, 2, 0, -4}, 1, "Example 1 (Cycle at index 1)");
+    runTestCase({1, 2}, 0, "Example 2 (Cycle at index 0)");
+    runTestCase({1}, -1, "Example 3 (No cycle)");
+    runTestCase({}, -1, "Edge Case (Empty List)");
+    runTestCase({10, 20, 30, 40, 50}, 4, "Edge Case (Cycle at the very end)");
 
     return 0;
 }
