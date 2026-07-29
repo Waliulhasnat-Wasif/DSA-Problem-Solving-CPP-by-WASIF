@@ -46,10 +46,12 @@ public:
 
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
     {
+        /*
         if (headA == nullptr || headB == nullptr)
         {
             return nullptr;
         }
+        */
 
         ListNode *ptrA = headA;
         ListNode *ptrB = headB;
