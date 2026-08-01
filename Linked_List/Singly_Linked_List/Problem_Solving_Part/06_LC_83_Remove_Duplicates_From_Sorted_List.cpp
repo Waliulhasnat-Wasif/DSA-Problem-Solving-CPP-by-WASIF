@@ -1,9 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <unordered_set>
 
 using std::cout;
 using std::string;
+using std::unordered_set;
 using std::vector;
 
 struct ListNode
@@ -19,6 +21,37 @@ struct ListNode
 class Solution
 {
 public:
+    ListNode *deleteDuplicatesSafe(ListNode *head)
+    {
+        if (head == nullptr)
+        {
+            return nullptr;
+        }
+
+        unordered_set<int> seen;
+        ListNode *prev = nullptr;
+        ListNode *current = head;
+
+        while (current != nullptr)
+        {
+            if (seen.find(current->val) != seen.end())
+            {
+                ListNode *toDelete = current;
+                prev->next = current->next;
+                current = current->next;
+                delete toDelete;
+            }
+            else
+            {
+                seen.insert(current->val);
+                prev = current;
+                current = current->next;
+            }
+        }
+
+        return head;
+    }
+
     ListNode *deleteDuplicates(ListNode *head)
     {
         ListNode *current = head;
@@ -100,7 +133,8 @@ void runTestCase(const vector<int> &input, const string &testName)
     printLinkedList(head);
 
     Solution sol;
-    ListNode *resultHead = sol.deleteDuplicates(head);
+    // ListNode *resultHead = sol.deleteDuplicates(head);
+    ListNode *resultHead = sol.deleteDuplicatesSafe(head);
     cout << "Modified List : ";
     printLinkedList(resultHead);
     cout << string(50, '-') << "\n";
