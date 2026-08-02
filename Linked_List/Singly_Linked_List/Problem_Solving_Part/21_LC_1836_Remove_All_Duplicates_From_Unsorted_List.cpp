@@ -19,7 +19,58 @@ struct ListNode
 class Solution
 {
 public:
-    ListNode *deleteDuplicatesSafe(ListNode *head)
+    ListNode *deleteDuplicatesUnsortedSafe(ListNode *head)
+    {
+        ListNode dummy(-1);
+        dummy.next = head;
+
+        ListNode *prev = &dummy;
+        ListNode *curr = head;
+
+        while (curr != nullptr)
+        {
+            bool isDuplicate = false;
+            ListNode *innerPrev = curr;
+            ListNode *innerCurr = curr->next;
+
+            while (innerCurr != nullptr)
+            {
+                if (innerCurr->val == curr->val)
+                {
+                    isDuplicate = true;
+
+                    ListNode *toDelete = innerCurr;
+                    innerPrev->next = toDelete->next;
+                    innerCurr = innerCurr->next;
+
+                    delete toDelete;
+                }
+                else
+                {
+                    innerPrev = innerCurr;
+                    innerCurr = innerCurr->next;
+                }
+            }
+
+            if (isDuplicate)
+            {
+                ListNode *toDelete = curr;
+                prev->next = toDelete->next;
+                curr = curr->next;
+
+                delete toDelete;
+            }
+            else
+            {
+                prev = curr;
+                curr = curr->next;
+            }
+        }
+
+        return dummy.next;
+    }
+
+    ListNode *deleteDuplicatesUnsorted(ListNode *head)
     {
         if (head == nullptr || head->next == nullptr)
         {
@@ -54,40 +105,6 @@ public:
             else
             {
                 prev = current;
-                current = current->next;
-            }
-        }
-
-        return dummy.next;
-    }
-
-    ListNode *deleteDuplicates(ListNode *head)
-    {
-        ListNode dummy(-1);
-        dummy.next = head;
-
-        ListNode *prev = &dummy;
-        ListNode *current = head;
-
-        while (current != nullptr)
-        {
-            if (current->next != nullptr && current->val == current->next->val)
-            {
-                int duplicateVal = current->val;
-
-                while (current != nullptr && current->val == duplicateVal)
-                {
-                    ListNode *toDelete = current;
-                    current = current->next;
-
-                    delete toDelete;
-                }
-
-                prev->next = current;
-            }
-            else
-            {
-                prev = prev->next;
                 current = current->next;
             }
         }
@@ -163,8 +180,7 @@ void runTestCase(const vector<int> &input, const string &testName)
     cout << "Original List : ";
     printLinkedList(head);
 
-    ListNode *resultHead = sol.deleteDuplicates(head);
-    // ListNode *resultHead = sol.deleteDuplicatesSafe(head);
+    ListNode *resultHead = sol.deleteDuplicatesUnsorted(head);
 
     cout << "Modified List : ";
     printLinkedList(resultHead);
@@ -177,13 +193,12 @@ void runTestCase(const vector<int> &input, const string &testName)
 
 int main()
 {
-    cout << "--- Testing LeetCode 82: Remove Duplicates from Sorted List II ---\n\n";
+    cout << "--- Testing LeetCode 1836: Remove Duplicates From an Unsorted Linked List ---\n\n";
 
-    runTestCase({1, 2, 3, 3, 4, 4, 5}, "Example 1 (Duplicates in middle)");
-    runTestCase({1, 1, 1, 2, 3}, "Example 2 (Duplicates at head)");
-    runTestCase({1, 1, 1, 1}, "Edge Case (All Duplicates)");
+    runTestCase({1, 2, 3, 2}, "Example 1 (Basic Unsorted Duplicates)");
+    runTestCase({2, 1, 1, 2}, "Example 2 (All Duplicates)");
+    runTestCase({3, 2, 2, 1, 3, 2, 4}, "Example 3 (Multiple varying duplicates)");
     runTestCase({1, 2, 3}, "Edge Case (No Duplicates)");
-    runTestCase({2, 2, 3, 4, 4, 5, 5}, "Edge Case (Duplicates at both ends)");
     runTestCase({}, "Edge Case (Empty List)");
 
     return 0;
