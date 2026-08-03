@@ -87,7 +87,7 @@ public:
             }
             else
             {
-                prev = prev->next;
+                prev = current;
                 current = current->next;
             }
         }
