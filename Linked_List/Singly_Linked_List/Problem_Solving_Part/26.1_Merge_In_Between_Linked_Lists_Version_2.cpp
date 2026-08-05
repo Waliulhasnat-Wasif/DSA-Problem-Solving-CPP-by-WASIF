@@ -17,25 +17,46 @@ struct ListNode
 class Solution
 {
 public:
-    ListNode *mergeInBetween(ListNode *list1, int a, int b, ListNode *list2)
+    ListNode *mergeInBetweenV2(ListNode *list1, int a, int b, ListNode *list2)
     {
-        ListNode *preA = list1;
-
-        for (int i = 0; i < a - 1; i++)
+        if (list1 == nullptr)
         {
+            return list2;
+        }
+
+        ListNode dummy(-1);
+        dummy.next = list1;
+
+        ListNode *preA = &dummy;
+
+        for (int i = 0; i < a; i++)
+        {
+            if (preA->next == nullptr)
+            {
+                break;
+            }
             preA = preA->next;
         }
 
         ListNode *curr = preA->next;
         for (int i = 0; i < b - a + 1; i++)
         {
+            if (curr == nullptr)
+            {
+                break;
+            }
             ListNode *toDelete = curr;
             curr = curr->next;
-
             delete toDelete;
         }
 
         ListNode *postB = curr;
+
+        if (list2 == nullptr)
+        {
+            preA->next = postB;
+            return dummy.next;
+        }
 
         ListNode *list2Tail = list2;
         while (list2Tail->next != nullptr)
@@ -46,7 +67,7 @@ public:
         preA->next = list2;
         list2Tail->next = postB;
 
-        return list1;
+        return dummy.next;
     }
 };
 
@@ -121,7 +142,7 @@ void runTestCase(const vector<int> &input1, int a, int b, const vector<int> &inp
     printLinkedList(list2);
     cout << "a = " << a << ", b = " << b << "\n";
 
-    ListNode *resultHead = sol.mergeInBetween(list1, a, b, list2);
+    ListNode *resultHead = sol.mergeInBetweenV2(list1, a, b, list2);
 
     cout << "Output : ";
     printLinkedList(resultHead);
@@ -134,10 +155,13 @@ void runTestCase(const vector<int> &input1, int a, int b, const vector<int> &inp
 
 int main()
 {
-    cout << "--- Testing LeetCode 1669: Merge In Between Linked Lists ---\n\n";
+    cout << "--- Testing LeetCode 1669: Merge In Between (V3 - Bulletproof) ---\n\n";
 
-    runTestCase({10, 1, 13, 6, 9, 5}, 3, 4, {1000000, 1000001, 1000002}, "Example 1");
-    runTestCase({0, 1, 2, 3, 4, 5, 6}, 2, 5, {1000000, 1000001, 1000002, 1000003, 1000004}, "Example 2");
+    runTestCase({0, 1, 2, 3}, 1, 2, {}, "Edge Case: list2 is Empty (Should just delete nodes)");
+    runTestCase({}, 1, 2, {99, 100}, "Edge Case: list1 is Empty (Should return list2)");
+    runTestCase({}, 0, 5, {}, "Edge Case: Both lists are Empty");
+    runTestCase({0, 1, 2}, 10, 15, {99}, "Edge Case: a and b are Out of Bounds");
+    runTestCase({0, 1, 2, 3, 4, 5}, 3, 100, {99}, "Edge Case: b is Out of Bounds");
 
     return 0;
 }
