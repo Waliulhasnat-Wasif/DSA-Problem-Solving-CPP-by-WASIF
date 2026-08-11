@@ -17,73 +17,88 @@ struct ListNode
 class Solution
 {
 public:
-    ListNode *swapPairsRecursive(ListNode *head)
+    void reorderListSafe(ListNode *head)
     {
         if (head == nullptr || head->next == nullptr)
         {
-            return head;
+            return;
         }
 
-        ListNode *firstNode = head;
-        ListNode *secondNode = head->next;
-
-        firstNode->next = swapPairsRecursive(secondNode->next);
-
-        secondNode->next = firstNode;
-
-        return secondNode;
-    }
-
-    /*
-    ListNode *swapPairs(ListNode *head)
-    {
-        ListNode dummy(-1);
-        dummy.next = head;
-
-        ListNode *prev = &dummy;
+        vector<ListNode *> nodes;
         ListNode *curr = head;
 
-        while (curr != nullptr && curr->next != nullptr)
+        while (curr != nullptr)
         {
-            ListNode *nextNode = curr->next;
-            ListNode *nextPair = nextNode->next;
-
-            nextNode->next = curr;
-            curr->next = nextPair;
-            prev->next = nextNode;
-
-            prev = curr;
-            curr = nextPair;
+            nodes.push_back(curr);
+            curr = curr->next;
         }
 
-        return dummy.next;
-    }
-    */
+        int left = 0;
+        int right = nodes.size() - 1;
 
-    ListNode *swapPairs(ListNode *head)
+        while (left < right)
+        {
+            nodes[left]->next = nodes[right];
+            left++;
+
+            if (left == right)
+            {
+                break;
+            }
+
+            nodes[right]->next = nodes[left];
+            right--;
+        }
+
+        nodes[left]->next = nullptr;
+    }
+
+    void reorderList(ListNode *head)
     {
         if (head == nullptr || head->next == nullptr)
         {
-            return head;
+            return;
         }
 
-        ListNode dummy(-1);
-        dummy.next = head;
-        ListNode *prev = &dummy;
+        ListNode *slow = head;
 
-        while (prev->next != nullptr && prev->next->next != nullptr)
+        ListNode *fast = head->next;
+
+        while (fast != nullptr && fast->next != nullptr)
         {
-            ListNode *curr = prev->next;
-            ListNode *nextNode = curr->next;
-
-            curr->next = nextNode->next;
-            nextNode->next = prev->next;
-            prev->next = nextNode;
-
-            prev = curr;
+            slow = slow->next;
+            fast = fast->next->next;
         }
 
-        return dummy.next;
+        ListNode *secondHalf = slow->next;
+
+        slow->next = nullptr;
+
+        ListNode *prev = nullptr;
+        ListNode *curr = secondHalf;
+
+        while (curr != nullptr)
+        {
+            ListNode *nextNode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+
+        ListNode *first = head;
+        ListNode *second = prev;
+
+        while (second != nullptr)
+        {
+            ListNode *temp1 = first->next;
+            ListNode *temp2 = second->next;
+
+            first->next = second;
+            second->next = temp1;
+
+            first = temp1;
+            second = temp2;
+        }
     }
 };
 
@@ -154,26 +169,26 @@ void runTestCase(const vector<int> &input, const string &testName)
     cout << "Original List : ";
     printLinkedList(head);
 
-    ListNode *resultHead = sol.swapPairs(head);
-    // ListNode *resultHead = sol.swapPairsRecursive(head);
+    sol.reorderList(head);
 
-    cout << "Modified List : ";
-    printLinkedList(resultHead);
+    cout << "Reordered List: ";
+    printLinkedList(head);
     cout << " -> [PASS]\n";
 
     cout << string(50, '-') << "\n";
 
-    deleteLinkedListSafely(resultHead);
+    deleteLinkedListSafely(head);
 }
 
 int main()
 {
-    cout << "--- Testing LeetCode 24: Swap Nodes in Pairs ---\n\n";
+    cout << "--- Testing LeetCode 143: Reorder List ---\n\n";
 
     runTestCase({1, 2, 3, 4}, "Example 1 (Even number of nodes)");
-    runTestCase({}, "Example 2 (Empty List)");
-    runTestCase({1}, "Example 3 (Single Node)");
-    runTestCase({1, 2, 3}, "Example 4 (Odd number of nodes)");
+    runTestCase({1, 2, 3, 4, 5}, "Example 2 (Odd number of nodes)");
+    runTestCase({1}, "Edge Case (Single node)");
+    runTestCase({1, 2}, "Edge Case (Two nodes)");
+    runTestCase({}, "Edge Case (Empty list)");
 
     return 0;
 }

@@ -70,7 +70,6 @@ public:
             ListNode *nextNode = curr->next;
 
             curr->next = nextNode->next;
-
             nextNode->next = prev->next;
             prev->next = nextNode;
         }
