@@ -34,7 +34,7 @@ public:
         }
 
         int left = 0;
-        int right = nodes.size() - 1;
+        int right = static_cast<int>(nodes.size()) - 1;
 
         while (left < right)
         {
