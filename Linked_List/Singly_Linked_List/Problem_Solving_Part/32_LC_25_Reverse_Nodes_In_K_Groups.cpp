@@ -56,7 +56,6 @@ public:
 
         int n = static_cast<int>(values.size());
 
-        // Step 2: Reverse blocks of size k using C++ STL
         for (int i = 0; i + k <= n; i += k)
         {
             std::reverse(values.begin() + i, values.begin() + i + k);

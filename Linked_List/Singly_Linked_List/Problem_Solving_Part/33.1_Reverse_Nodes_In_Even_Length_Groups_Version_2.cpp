@@ -161,11 +161,9 @@ int main()
 {
     cout << "--- Testing Generalized Group Reversal ---\n\n";
 
-    // Even Mode (Original LeetCode 2074)
     runTestCase({5, 2, 6, 3, 9, 1, 7, 3, 8, 4}, true, "Even Mode - Complex group lengths");
     runTestCase({1, 1, 0, 6}, true, "Even Mode - Last group is odd length (1)");
 
-    // Odd Mode (The Proposed Variation)
     runTestCase({5, 2, 6, 3, 9, 1, 7, 3, 8, 4}, false, "Odd Mode - Complex group lengths");
     runTestCase({1, 1, 0, 6, 5}, false, "Odd Mode - Testing short tail");
     runTestCase({1}, false, "Odd Mode - Single Node");
