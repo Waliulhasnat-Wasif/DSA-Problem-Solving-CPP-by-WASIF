@@ -82,6 +82,52 @@ public:
 
         return l1;
     }
+
+    ListNode *addTwoNumbersStrictO1(ListNode *l1, ListNode *l2)
+    {
+        ListNode *p1 = l1;
+        ListNode *p2 = l2;
+        ListNode *prev = nullptr;
+        int carry = 0;
+
+        while (p1 != nullptr || p2 != nullptr || carry > 0)
+        {
+
+            if (p1 == nullptr && p2 != nullptr)
+            {
+                prev->next = p2;
+                p1 = p2;
+                p2 = nullptr;
+            }
+
+            int sum = carry;
+            if (p1 != nullptr)
+                sum += p1->val;
+            if (p2 != nullptr)
+                sum += p2->val;
+
+            carry = sum / 10;
+
+            if (p1 != nullptr)
+            {
+                p1->val = sum % 10;
+                prev = p1;
+                p1 = p1->next;
+            }
+            else
+            {
+                prev->next = new ListNode(sum % 10);
+                prev = prev->next;
+            }
+
+            if (p2 != nullptr)
+            {
+                p2 = p2->next;
+            }
+        }
+
+        return l1;
+    }
 };
 
 ListNode *createLinkedList(const vector<int> &nums)
@@ -150,6 +196,7 @@ void runTestCase(const vector<int> &input1, const vector<int> &input2, const str
     printLinkedList(l2);
 
     ListNode *resultHead = sol.addTwoNumbers(l1, l2);
+    // ListNode *resultHead = sol.addTwoNumbersStrictO1(l1, l2);
 
     cout << "Sum List    : ";
     printLinkedList(resultHead);
