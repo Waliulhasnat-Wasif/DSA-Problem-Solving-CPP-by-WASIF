@@ -27,7 +27,6 @@ struct CompareNode
 class Solution
 {
 private:
-    // Robust Merge Sub-routine
     ListNode *mergeTwoSortedList(ListNode *list1, ListNode *list2)
     {
         ListNode dummy(-1);
@@ -52,6 +51,25 @@ private:
         return dummy.next;
     }
 
+    ListNode *mergeKListsRecursive(vector<ListNode *> &lists, int start, int end)
+    {
+        if (start > end)
+        {
+            return nullptr;
+        }
+        if (start == end)
+        {
+            return lists[start];
+        }
+
+        int mid = start + (end - start) / 2;
+
+        ListNode *leftSorted = mergeKListsRecursive(lists, start, mid);
+        ListNode *rightSorted = mergeKListsRecursive(lists, mid + 1, end);
+
+        return mergeTwoSortedList(leftSorted, rightSorted);
+    }
+
 public:
     ListNode *mergeKListsDivideAndConquer(vector<ListNode *> &lists)
     {
@@ -73,6 +91,17 @@ public:
         }
 
         return lists[0];
+    }
+
+    ListNode *mergeKLists(vector<ListNode *> &lists)
+    {
+        if (lists.empty())
+        {
+            return nullptr;
+        }
+
+        int n = static_cast<int>(lists.size());
+        return mergeKListsRecursive(lists, 0, n - 1);
     }
 
     ListNode *mergeKListsMinHeap(vector<ListNode *> &lists)
@@ -167,6 +196,7 @@ void runTestCase(const vector<vector<int>> &inputArrays, const string &testName)
     }
 
     ListNode *resultHead = sol.mergeKListsDivideAndConquer(lists);
+    // ListNode *resultHead = sol.mergeKLists(lists);
 
     cout << "Merged List : ";
     printLinkedList(resultHead);
