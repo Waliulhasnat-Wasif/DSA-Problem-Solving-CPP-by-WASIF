@@ -30,7 +30,9 @@ public:
     Node *copyRandomListHashMap(Node *head)
     {
         if (head == nullptr)
-            return nullptr;
+        {
+            return head;
+        }
 
         unordered_map<Node *, Node *> nodeMap;
         Node *curr = head;
@@ -57,7 +59,7 @@ public:
     {
         if (head == nullptr)
         {
-            return nullptr;
+            return head;
         }
 
         Node *curr = head;
@@ -86,7 +88,6 @@ public:
         while (curr != nullptr)
         {
             Node *clonedNode = curr->next;
-
             cloneTail->next = clonedNode;
             cloneTail = cloneTail->next;
 
