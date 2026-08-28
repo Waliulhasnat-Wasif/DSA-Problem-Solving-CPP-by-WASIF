@@ -5,6 +5,7 @@ using std::cerr;
 using std::cout;
 using std::endl;
 using std::exception;
+using std::invalid_argument;
 using std::underflow_error;
 
 class Stack
@@ -14,7 +15,6 @@ private:
     int capacity;
     int currentSize;
 
-    // Dynamic memory resizing logic
     void resize()
     {
         int newCapacity = capacity * 2;
@@ -31,25 +31,22 @@ private:
     }
 
 public:
-    // 1. Default Constructor
-    Stack()
+    explicit Stack(int initialCapacity = 2) : capacity(initialCapacity), currentSize(0)
     {
-        capacity = 2;
-        currentSize = 0;
+        if (initialCapacity <= 0)
+        {
+            throw invalid_argument("Stack capacity must be greater than zero.");
+        }
         arr = new int[capacity];
     }
 
-    // 2. Destructor
     ~Stack()
     {
         delete[] arr;
     }
 
-    // 3. Copy Constructor (Deep Copy)
-    Stack(const Stack &other)
+    Stack(const Stack &other) : capacity(other.capacity), currentSize(other.currentSize)
     {
-        capacity = other.capacity;
-        currentSize = other.currentSize;
         arr = new int[capacity];
 
         for (int i = 0; i < currentSize; i++)
@@ -58,7 +55,6 @@ public:
         }
     }
 
-    // 4. Copy Assignment Operator (Strong Exception Safety)
     Stack &operator=(const Stack &other)
     {
         if (this == &other)
@@ -81,7 +77,6 @@ public:
         return *this;
     }
 
-    // 5. Push Operation
     void push(int val)
     {
         if (currentSize == capacity)
@@ -92,7 +87,6 @@ public:
         currentSize++;
     }
 
-    // 6. Pop Operation
     void pop()
     {
         if (currentSize == 0)
@@ -102,7 +96,6 @@ public:
         currentSize--;
     }
 
-    // 7. Top Operation (Read-only -> const)
     int top() const
     {
         if (currentSize == 0)
@@ -112,22 +105,17 @@ public:
         return arr[currentSize - 1];
     }
 
-    // 8. Empty Check (Read-only -> const)
     bool empty() const
     {
         return currentSize == 0;
     }
 
-    // 9. Size Check (Read-only -> const)
     int size() const
     {
         return currentSize;
     }
 };
 
-// ==========================================
-// Test Driver
-// ==========================================
 int main()
 {
     try
