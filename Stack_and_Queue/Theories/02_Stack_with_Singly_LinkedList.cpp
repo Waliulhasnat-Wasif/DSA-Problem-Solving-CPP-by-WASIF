@@ -1,18 +1,12 @@
-/**
- * @file Stack_LinkedList.cpp
- * @brief Enterprise-grade Linked List implementation of a Stack.
- * @details Features Strict O(1) operations, Rule of Three, Const Correctness,
- *          and the Canonical Copy-and-Swap Idiom for Strong Exception Safety.
- */
-
 #include <iostream>
 #include <stdexcept>
+#include <utility>
 
-// Specific using declarations to maintain namespace hygiene
 using std::cerr;
 using std::cout;
 using std::endl;
 using std::exception;
+using std::move;
 using std::swap;
 using std::underflow_error;
 
@@ -70,13 +64,46 @@ public:
         }
     }
 
+    Stack(Stack &&other) noexcept : head(other.head), currentSize(other.currentSize)
+    {
+        other.head = nullptr;
+        other.currentSize = 0;
+    }
+
+    friend void swap(Stack &first, Stack &second) noexcept
+    {
+        Node *tempHead = first.head;
+        first.head = second.head;
+        second.head = tempHead;
+
+        size_t tempSize = first.currentSize;
+        first.currentSize = second.currentSize;
+        second.currentSize = tempSize;
+    }
+
     Stack &operator=(Stack temp)
     {
-        swap(head, temp.head);
-        swap(currentSize, temp.currentSize);
+        swap(*this, temp);
 
         return *this;
     }
+
+    /*Stack& operator=(const Stack& other) {
+        if (this == &other) {
+            return *this;
+        }
+
+        // Create a temporary deep copy. If 'new' fails here, the original object remains untouched.
+        Stack temp(other);
+
+        // Swap pointers and sizes
+        swap(head, temp.head);
+        swap(currentSize, temp.currentSize);
+
+        // temp's destructor will automatically clean up the old memory of this object
+        return *this;
+    }
+    */
 
     void push(int val)
     {
@@ -148,6 +175,29 @@ int main()
         s3 = s1; // The old memory of s3 (999) is safely destroyed by temp's destructor
         cout << "\n--- s3 Stack (Assigned from s1) ---" << endl;
         cout << "s3 Top: " << s3.top() << endl; // 20
+
+        // Move Constructor Test (O(1) Ownership Transfer)
+        Stack s4 = move(s2);
+        cout << "\n--- s4 Stack (Moved from s2) ---" << endl;
+        cout << "s4 Top: " << s4.top() << endl;   // 30
+        cout << "s4 Size: " << s4.size() << endl; // 3
+        cout << "s2 Size after move: " << s2.size() << " (Empty: " << (s2.empty() ? "Yes" : "No") << ")" << endl;
+
+        // Move Assignment Operator Test (O(1) Ownership Transfer)
+        Stack s5;
+        s5.push(888);
+        s5 = move(s3); // s5 gets s3's data, old memory of s5 is safely destroyed
+        cout << "\n--- s5 Stack (Move-Assigned from s3) ---" << endl;
+        cout << "s5 Top: " << s5.top() << endl;   // 20
+        cout << "s5 Size: " << s5.size() << endl; // 2
+        cout << "s3 Size after move: " << s3.size() << " (Empty: " << (s3.empty() ? "Yes" : "No") << ")" << endl;
+
+        // Custom Friend Swap Test (Outside Call)
+        s1.push(555);
+        cout << "\n--- Direct Friend Swap Test (s1 <-> s5) ---" << endl;
+        cout << "Before Swap -> s1 Top: " << s1.top() << ", s5 Top: " << s5.top() << endl;
+        swap(s1, s5); // Direct non-member call
+        cout << "After Swap  -> s1 Top: " << s1.top() << ", s5 Top: " << s5.top() << endl;
 
         // Error Handling Test
         cout << "\n--- Underflow Exception Testing ---" << endl;
