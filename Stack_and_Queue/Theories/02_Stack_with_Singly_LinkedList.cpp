@@ -7,7 +7,7 @@ using std::cout;
 using std::endl;
 using std::exception;
 using std::move;
-using std::swap;
+// using std::swap;
 using std::underflow_error;
 
 struct Node
@@ -81,6 +81,20 @@ public:
         second.currentSize = tempSize;
     }
 
+    /*
+    friend void swap(Stack &first, Stack &second) noexcept
+    {
+        // C++ Idiomatic way: Enable ADL (Argument-Dependent Lookup) locally
+        using std::swap;
+
+        // 1. head pointer swap
+        swap(first.head, second.head);
+
+        // 2. currentSize swap
+        swap(first.currentSize, second.currentSize);
+    }
+    */
+
     Stack &operator=(Stack temp)
     {
         swap(*this, temp);
@@ -88,7 +102,8 @@ public:
         return *this;
     }
 
-    /*Stack& operator=(const Stack& other) {
+    /*
+    Stack& operator=(const Stack& other) {
         if (this == &other) {
             return *this;
         }
