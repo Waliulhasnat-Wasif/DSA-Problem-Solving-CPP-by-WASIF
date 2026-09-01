@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* insertSafe(ListNode* head, int insertVal) {
     if (head == nullptr) {
       ListNode* newNode = new ListNode(insertVal);

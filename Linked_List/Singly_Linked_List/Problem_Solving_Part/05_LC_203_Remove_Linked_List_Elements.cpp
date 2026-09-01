@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* removeElements(ListNode* head, int val) {
     ListNode dummy(-1);
     dummy.next = head;

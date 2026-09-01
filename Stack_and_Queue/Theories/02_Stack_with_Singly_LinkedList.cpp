@@ -18,7 +18,7 @@ struct Node {
 };
 
 class Stack {
- private:
+private:
   Node* head;
   size_t currentSize;
 
@@ -31,10 +31,12 @@ class Stack {
     currentSize = 0;
   }
 
- public:
+public:
   Stack() : head(nullptr), currentSize(0) {}
 
-  ~Stack() { clear(); }
+  ~Stack() {
+    clear();
+  }
 
   Stack(const Stack& other) : head(nullptr), currentSize(0) {
     if (other.head == nullptr) {
@@ -133,9 +135,13 @@ class Stack {
     return head->data;
   }
 
-  bool empty() const { return head == nullptr; }
+  bool empty() const {
+    return head == nullptr;
+  }
 
-  size_t size() const { return currentSize; }
+  size_t size() const {
+    return currentSize;
+  }
 };
 
 int main() {

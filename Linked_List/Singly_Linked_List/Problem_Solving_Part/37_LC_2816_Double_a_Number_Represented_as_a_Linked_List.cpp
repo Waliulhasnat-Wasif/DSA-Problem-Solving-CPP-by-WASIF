@@ -17,7 +17,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* doubleItSafe(ListNode* head) {
     if (head == nullptr) {
       return head;

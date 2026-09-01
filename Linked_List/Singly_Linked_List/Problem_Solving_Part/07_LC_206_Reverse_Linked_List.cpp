@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* reverseList(ListNode* head) {
     ListNode* previous = nullptr;
     ListNode* current = head;

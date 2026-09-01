@@ -11,7 +11,7 @@ using std::move;
 using std::underflow_error;
 
 class Queue {
- private:
+private:
   int* arr;
   size_t capacity;
   size_t currentSize;
@@ -37,7 +37,7 @@ class Queue {
     rearIndex = currentSize;
   }
 
- public:
+public:
   // 1. Constructor (with Member Initializer List and Fail-Fast Guard)
   explicit Queue(size_t initialCapacity = 2)
       : capacity(initialCapacity), currentSize(0), frontIndex(0), rearIndex(0) {
@@ -48,7 +48,9 @@ class Queue {
   }
 
   // 2. Destructor
-  ~Queue() { delete[] arr; }
+  ~Queue() {
+    delete[] arr;
+  }
 
   // 3. Copy Constructor (Deep Copy + Unwrapping Defragmentation)
   Queue(const Queue& other)
@@ -135,13 +137,19 @@ class Queue {
   }
 
   // Empty Check -> Strict O(1) Time
-  bool empty() const { return currentSize == 0; }
+  bool empty() const {
+    return currentSize == 0;
+  }
 
   // Size Check -> Strict O(1) Time
-  size_t size() const { return currentSize; }
+  size_t size() const {
+    return currentSize;
+  }
 
   // Capacity Check
-  size_t getCapacity() const { return capacity; }
+  size_t getCapacity() const {
+    return capacity;
+  }
 };
 
 // ==========================================

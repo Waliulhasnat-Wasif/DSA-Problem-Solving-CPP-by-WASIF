@@ -15,7 +15,7 @@ struct ListNode {
 };
 
 class Solution {
- private:
+private:
   ListNode* getKthNode(ListNode* curr, int k) {
     while (curr != nullptr && k > 1) {
       curr = curr->next;
@@ -36,7 +36,7 @@ class Solution {
     }
   }
 
- public:
+public:
   ListNode* reverseKGroupSafe(ListNode* head, int k) {
     vector<int> values;
     ListNode* curr = head;

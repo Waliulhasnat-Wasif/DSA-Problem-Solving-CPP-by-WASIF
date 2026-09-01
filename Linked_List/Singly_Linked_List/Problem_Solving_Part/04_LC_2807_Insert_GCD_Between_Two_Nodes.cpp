@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- private:
+private:
   int calculateGCD(int a, int b) {
     while (b != 0) {
       int remainder = a % b;
@@ -27,7 +27,7 @@ class Solution {
     return a;
   }
 
- public:
+public:
   ListNode* insertGreatestCommonDivisors(ListNode* head) {
     if (head == nullptr || head->next == nullptr) return head;
 

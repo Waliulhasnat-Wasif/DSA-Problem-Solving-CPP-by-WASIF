@@ -15,7 +15,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* rotateLeftSafe(ListNode* head, int k) {
     if (head == nullptr || head->next == nullptr || k == 0) {
       return head;

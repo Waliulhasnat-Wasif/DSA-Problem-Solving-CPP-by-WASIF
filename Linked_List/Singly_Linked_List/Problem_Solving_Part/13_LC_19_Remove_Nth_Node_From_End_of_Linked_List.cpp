@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* removeNthFromEndSafe(ListNode* head, int n) {
     ListNode dummy(-1);
     dummy.next = head;

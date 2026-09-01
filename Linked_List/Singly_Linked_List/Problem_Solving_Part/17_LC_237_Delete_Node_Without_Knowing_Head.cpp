@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   void deleteNode(ListNode* node) {
     ListNode* nodeToDelete = node->next;
 

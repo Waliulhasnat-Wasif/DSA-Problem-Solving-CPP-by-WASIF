@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* getIntersectionNodeHash(ListNode* headA, ListNode* headB) {
     unordered_set<ListNode*> visitedNodes;
     ListNode* currentA = headA;

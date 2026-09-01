@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* deleteMiddleTwoPasses(ListNode* head) {
     if (head == nullptr || head->next == nullptr) {
       delete head;

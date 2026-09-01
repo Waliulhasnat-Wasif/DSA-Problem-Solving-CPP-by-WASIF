@@ -15,7 +15,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* reverseBetweenSafe(ListNode* head, int left, int right) {
     if (head == nullptr || left == right) {
       return head;

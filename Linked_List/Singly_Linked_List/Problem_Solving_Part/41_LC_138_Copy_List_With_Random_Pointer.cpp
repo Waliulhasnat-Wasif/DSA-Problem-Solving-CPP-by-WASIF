@@ -10,7 +10,7 @@ using std::unordered_map;
 using std::vector;
 
 class Node {
- public:
+public:
   int val;
   Node* next;
   Node* random;
@@ -23,7 +23,7 @@ class Node {
 };
 
 class Solution {
- public:
+public:
   Node* copyRandomListHashMap(Node* head) {
     if (head == nullptr) {
       return head;

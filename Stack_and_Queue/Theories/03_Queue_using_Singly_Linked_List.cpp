@@ -17,7 +17,7 @@ struct Node {
 };
 
 class Queue {
- private:
+private:
   Node* frontNode;
   Node* rearNode;
   size_t currentSize;
@@ -32,10 +32,12 @@ class Queue {
     currentSize = 0;
   }
 
- public:
+public:
   Queue() : frontNode(nullptr), rearNode(nullptr), currentSize(0) {}
 
-  ~Queue() { clear(); }
+  ~Queue() {
+    clear();
+  }
 
   Queue(const Queue& other)
       : frontNode(nullptr), rearNode(nullptr), currentSize(0) {
@@ -143,9 +145,13 @@ class Queue {
     return rearNode->data;
   }
 
-  bool empty() const { return currentSize == 0; }
+  bool empty() const {
+    return currentSize == 0;
+  }
 
-  size_t size() const { return currentSize; }
+  size_t size() const {
+    return currentSize;
+  }
 };
 
 int main() {

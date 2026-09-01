@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* swapNodesSafe(ListNode* head, int k) {
     /*
     if (head == nullptr)

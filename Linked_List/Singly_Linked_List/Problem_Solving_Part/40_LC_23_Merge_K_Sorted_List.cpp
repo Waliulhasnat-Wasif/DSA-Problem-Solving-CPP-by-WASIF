@@ -22,7 +22,7 @@ struct CompareNode {
 };
 
 class Solution {
- private:
+private:
   ListNode* mergeTwoSortedList(ListNode* list1, ListNode* list2) {
     ListNode dummy(-1);
     ListNode* tail = &dummy;
@@ -58,7 +58,7 @@ class Solution {
     return mergeTwoSortedList(leftSorted, rightSorted);
   }
 
- public:
+public:
   ListNode* mergeKListsDivideAndConquer(vector<ListNode*>& lists) {
     if (lists.empty()) {
       return nullptr;

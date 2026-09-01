@@ -18,7 +18,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* deleteDuplicatesSafe(ListNode* head) {
     if (head == nullptr) {
       return nullptr;

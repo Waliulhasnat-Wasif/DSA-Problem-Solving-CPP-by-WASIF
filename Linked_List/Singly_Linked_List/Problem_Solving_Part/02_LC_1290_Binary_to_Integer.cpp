@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   int getDecimalValue(ListNode* head) {
     int result = 0;
 

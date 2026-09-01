@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* deleteNodesSafe(ListNode* head, int m, int n) {
     if (head == nullptr) {
       return nullptr;

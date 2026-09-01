@@ -4,7 +4,7 @@ using std ::cout;
 using std ::endl;
 
 class Node {
- public:
+public:
   int val;
   Node* next;
 

@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- private:
+private:
   ListNode* reverseList(ListNode* head) {
     ListNode* prev = nullptr;
     ListNode* curr = head;
@@ -31,7 +31,7 @@ class Solution {
     return prev;
   }
 
- public:
+public:
   ListNode* addTwoNumbersSafe(ListNode* l1, ListNode* l2) {
     l1 = reverseList(l1);
     l2 = reverseList(l2);

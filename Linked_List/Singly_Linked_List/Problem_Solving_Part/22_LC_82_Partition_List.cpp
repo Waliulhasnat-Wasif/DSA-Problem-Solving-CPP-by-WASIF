@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* partitionSafe(ListNode* head, int x) {
     if (head == nullptr || head->next == nullptr) {
       return head;

@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* addTwoNumbersSafe(ListNode* l1, ListNode* l2) {
     ListNode dummy(-1);
     ListNode* curr = &dummy;

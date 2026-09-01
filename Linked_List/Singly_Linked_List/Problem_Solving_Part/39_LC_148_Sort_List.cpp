@@ -15,7 +15,7 @@ struct ListNode {
 };
 
 class Solution {
- private:
+private:
   int getLength(ListNode* head) {
     int len = 0;
     while (head != nullptr) {
@@ -87,7 +87,7 @@ class Solution {
     return dummy.next;
   }
 
- public:
+public:
   ListNode* sortListIterative(ListNode* head) {
     if (head == nullptr || head->next == nullptr) {
       return head;

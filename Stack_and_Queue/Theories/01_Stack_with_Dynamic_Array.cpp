@@ -11,7 +11,7 @@ using std::move;
 using std::underflow_error;
 
 class Stack {
- private:
+private:
   int* arr;
   size_t capacity;
   size_t currentSize;
@@ -29,7 +29,7 @@ class Stack {
     capacity = newCapacity;
   }
 
- public:
+public:
   // 1. Constructor (with Member Initializer List and Fail-Fast Guard)
   explicit Stack(size_t initialCapacity = 2)
       : capacity(initialCapacity), currentSize(0) {
@@ -40,7 +40,9 @@ class Stack {
   }
 
   // 2. Destructor
-  ~Stack() { delete[] arr; }
+  ~Stack() {
+    delete[] arr;
+  }
 
   // 3. Copy Constructor (Deep Copy)
   Stack(const Stack& other)
@@ -157,13 +159,19 @@ class Stack {
   }
 
   // Empty Check (Read-only -> const) -> O(1) Time
-  bool empty() const { return currentSize == 0; }
+  bool empty() const {
+    return currentSize == 0;
+  }
 
   // Size Check (Read-only -> const) -> O(1) Time
-  size_t size() const { return currentSize; }
+  size_t size() const {
+    return currentSize;
+  }
 
   // Capacity Check (Optional)
-  size_t getCapacity() const { return capacity; }
+  size_t getCapacity() const {
+    return capacity;
+  }
 };
 
 int main() {

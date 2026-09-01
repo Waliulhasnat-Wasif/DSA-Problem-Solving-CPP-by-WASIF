@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* mergeInBetweenV2(ListNode* list1, int a, int b, ListNode* list2) {
     if (list1 == nullptr) {
       return list2;

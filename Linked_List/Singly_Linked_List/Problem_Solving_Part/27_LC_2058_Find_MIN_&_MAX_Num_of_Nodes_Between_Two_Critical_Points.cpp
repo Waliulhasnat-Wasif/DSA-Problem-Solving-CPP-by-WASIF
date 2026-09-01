@@ -17,7 +17,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   vector<int> nodesBetweenCriticalPointsSafe(ListNode* head) {
     if (head == nullptr || head->next == nullptr ||
         head->next->next == nullptr) {

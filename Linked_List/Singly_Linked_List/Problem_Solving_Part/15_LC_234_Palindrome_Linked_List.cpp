@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- private:
+private:
   ListNode* reverseList(ListNode* head) {
     ListNode* prev = nullptr;
     ListNode* curr = head;
@@ -29,7 +29,7 @@ class Solution {
     return prev;
   }
 
- public:
+public:
   bool isPalindromeSafe(ListNode* head) {
     vector<int> vals;
     ListNode* current = head;

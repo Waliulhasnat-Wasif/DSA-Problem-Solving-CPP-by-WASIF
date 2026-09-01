@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* mergeInBetween(ListNode* list1, int a, int b, ListNode* list2) {
     ListNode* preA = list1;
 

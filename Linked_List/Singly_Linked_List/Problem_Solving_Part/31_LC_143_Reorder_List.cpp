@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   void reorderListSafe(ListNode* head) {
     if (head == nullptr || head->next == nullptr) {
       return;

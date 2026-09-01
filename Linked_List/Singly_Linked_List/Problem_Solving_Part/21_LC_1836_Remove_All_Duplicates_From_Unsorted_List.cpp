@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* deleteDuplicatesUnsortedSafe(ListNode* head) {
     ListNode dummy(-1);
     dummy.next = head;

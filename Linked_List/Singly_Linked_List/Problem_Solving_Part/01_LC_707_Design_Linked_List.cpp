@@ -3,9 +3,9 @@ using std ::cout;
 using std ::endl;
 
 class MyLinkedList {
- private:
+private:
   class Node {
-   public:
+  public:
     int val;
     Node* next;
 
@@ -19,7 +19,7 @@ class MyLinkedList {
   Node* tail;
   int size;
 
- public:
+public:
   MyLinkedList() {
     head = nullptr;
     tail = nullptr;
@@ -151,7 +151,9 @@ class MyLinkedList {
     cout << "NULL" << endl;
   }
 
-  int getSize() { return size; }
+  int getSize() {
+    return size;
+  }
 };
 
 int main() {

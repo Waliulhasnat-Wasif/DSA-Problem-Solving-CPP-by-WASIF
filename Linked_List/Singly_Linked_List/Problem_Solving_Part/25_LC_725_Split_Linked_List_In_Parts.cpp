@@ -14,7 +14,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   vector<ListNode*> splitListToPartsSafe(ListNode* head, int k) {
     vector<ListNode*> nodes;
     ListNode* curr = head;

@@ -6,7 +6,7 @@ using std ::endl;
 using std ::unordered_set;
 
 class Node {
- public:
+public:
   int val;
   Node* next;
 

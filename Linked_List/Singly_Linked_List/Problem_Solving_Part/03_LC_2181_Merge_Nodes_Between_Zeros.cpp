@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   ListNode* mergeNodes(ListNode* head) {
     ListNode* reader = head->next;
     ListNode* writer = head;

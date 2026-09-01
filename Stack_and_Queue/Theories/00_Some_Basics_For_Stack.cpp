@@ -9,7 +9,7 @@ using std::invalid_argument;
 using std::underflow_error;
 
 class Stack {
- private:
+private:
   int* arr;
   int capacity;
   int topIndex;
@@ -40,7 +40,7 @@ class Stack {
          << endl;
   }
 
- public:
+public:
   // 1. Constructor with Member Initializer List and Fail-Fast Guard
   explicit Stack(int size = 2) : capacity(size), topIndex(-1) {
     if (size <= 0) {
@@ -140,10 +140,14 @@ class Stack {
   }
 
   // Size (Const Correct)
-  int size() const { return (topIndex + 1); }
+  int size() const {
+    return (topIndex + 1);
+  }
 
   // Empty Check (Const Correct)
-  bool isEmpty() const { return topIndex == -1; }
+  bool isEmpty() const {
+    return topIndex == -1;
+  }
 };
 
 // Global Diagnostic Function

@@ -16,7 +16,7 @@ struct ListNode {
 };
 
 class Solution {
- public:
+public:
   bool hasCycleHash(ListNode* head) {
     unordered_set<ListNode*> visitedNodes;
     ListNode* current = head;
