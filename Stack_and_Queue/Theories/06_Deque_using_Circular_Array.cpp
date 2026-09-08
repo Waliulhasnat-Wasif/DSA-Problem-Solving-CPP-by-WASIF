@@ -13,11 +13,12 @@ using std::underflow_error;
 class Deque {
 public:
     // 1. Constructor (Fail-Fast Guard included)
-    explicit Deque(size_t initial_capacity = 2)
-        : arr_(new int[initial_capacity]), capacity_(initial_capacity), current_size_(0), front_index_(0), rear_index_(0) {
+    explicit Deque(size_t initial_capacity = 2) : arr_(nullptr), capacity_(initial_capacity), current_size_(0), front_index_(0), rear_index_(0) {
         if (initial_capacity == 0) {
             throw invalid_argument("Deque capacity must be greater than zero.");
         }
+
+        arr_ = new int[capacity_];
     }
 
     // 2. Destructor
@@ -166,9 +167,6 @@ private:
     }
 };
 
-// ==========================================
-// Test Driver
-// ==========================================
 int main() {
     try {
         Deque dq1;  // Capacity starts at 2

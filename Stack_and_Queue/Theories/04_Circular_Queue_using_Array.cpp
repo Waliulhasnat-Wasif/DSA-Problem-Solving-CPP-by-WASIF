@@ -39,10 +39,12 @@ private:
 
 public:
     // 1. Constructor (with Member Initializer List and Fail-Fast Guard)
-    explicit Queue(size_t initialCapacity = 2) : capacity(initialCapacity), currentSize(0), frontIndex(0), rearIndex(0) {
-        if (initialCapacity == 0) {
-            throw invalid_argument("Queue capacity must be greater than zero.");
-        }
+    explicit Queue(size_t initialCapacity = 2)
+        : capacity(initialCapacity == 0 ? throw invalid_argument("Capacity must be > 0") : initialCapacity),
+          currentSize(0),
+          frontIndex(0),
+          rearIndex(0) {
+        // capacity is now 100% safe and not zero
         arr = new int[capacity];
     }
 
