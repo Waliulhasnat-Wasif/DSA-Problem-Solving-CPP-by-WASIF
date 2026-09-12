@@ -202,18 +202,18 @@ int main() {
         // Move Constructor Test (O(1) Ownership Transfer)
         Stack s4 = move(s2);
         cout << "\n--- s4 Stack (Moved from s2) ---" << endl;
-        cout << "s4 Top: " << s4.top() << endl;    // 30
-        cout << "s4 Size: " << s4.size() << endl;  // 3
-        cout << "s2 Size after move: " << s2.size() << " (Empty: " << (s2.empty() ? "Yes" : "No") << ")" << endl;
+        cout << "s4 Top: " << s4.top() << endl;                                                                    // 30
+        cout << "s4 Size: " << s4.size() << endl;                                                                  // 3
+        cout << "s2 Size after move: " << s2.size() << " (Empty: " << (s2.empty() ? "Yes" : "No") << ")" << endl;  // 0 (Empty: Yes)
 
         // Move Assignment Operator Test (O(1) Ownership Transfer)
         Stack s5;
         s5.push(888);
         s5 = move(s3);  // s5 gets s3's data, old memory of s5 is safely destroyed
         cout << "\n--- s5 Stack (Move-Assigned from s3) ---" << endl;
-        cout << "s5 Top: " << s5.top() << endl;    // 20
-        cout << "s5 Size: " << s5.size() << endl;  // 2
-        cout << "s3 Size after move: " << s3.size() << " (Empty: " << (s3.empty() ? "Yes" : "No") << ")" << endl;
+        cout << "s5 Top: " << s5.top() << endl;                                                                    // 20
+        cout << "s5 Size: " << s5.size() << endl;                                                                  // 2
+        cout << "s3 Size after move: " << s3.size() << " (Empty: " << (s3.empty() ? "Yes" : "No") << ")" << endl;  // 0 (Empty: Yes)
 
         // Error Handling Test
         cout << "\n--- Underflow Exception Testing ---" << endl;
