@@ -67,17 +67,13 @@ private:
     PopCondition pop_condition_;
 };
 
-// ==========================================
 // Helper Struct for Test Driver
-// ==========================================
 struct Element {
     int value;
     size_t index;
 };
 
-// ==========================================
 // Test Driver (Solving "Next Greater Element")
-// ==========================================
 int main() {
     try {
         std::vector<int> nums = {2, 1, 2, 4, 3};
