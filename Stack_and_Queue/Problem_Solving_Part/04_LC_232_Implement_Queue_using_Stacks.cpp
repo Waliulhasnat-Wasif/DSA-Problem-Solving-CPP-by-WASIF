@@ -1,18 +1,9 @@
-/**
- * @file Implement_Queue_Using_Stacks.cpp
- * @brief Enterprise-grade solution for LeetCode 232.
- * @details Compares a Push-Heavy Baseline Architecture against an Amortized
- *          O(1) Optimized Architecture. Showcases advanced C++ concepts like
- *          Logical Constness using 'mutable', Exception Safety, and Rule of Five.
- */
-
 #include <exception>
 #include <iostream>
 #include <stack>
 #include <stdexcept>
 #include <string>
 
-// Specific using declarations to maintain namespace hygiene
 using std::cerr;
 using std::cout;
 using std::endl;
