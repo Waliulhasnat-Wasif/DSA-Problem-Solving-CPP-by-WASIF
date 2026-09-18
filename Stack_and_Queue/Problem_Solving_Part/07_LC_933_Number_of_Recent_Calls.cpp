@@ -18,7 +18,6 @@ public:
 
     int ping(int t) {
         q_.push(t);
-        // Remove strictly older requests outside the 3000ms window
         while (!q_.empty() && q_.front() < t - 3000) {
             q_.pop();
         }
@@ -29,24 +28,16 @@ private:
     queue<int> q_;
 };
 
-// ==========================================
-// Approach 2: Optimized Architecture (Bounded Ring Buffer)
-// Zero-Allocation during execution. Highly optimized for HFT / Rate Limiters.
-// Maximum possible elements in [t-3000, t] is 3001. We allocate 3005 for safety.
-// ==========================================
 class RecentCounter {
 public:
-    // 1. Constructor (Defensive nullptr initialization before heap allocation)
     RecentCounter() : arr_(nullptr), capacity_(3005), current_size_(0), head_(0), tail_(0) {
         arr_ = new int[capacity_];
     }
 
-    // 2. Destructor
     ~RecentCounter() {
         delete[] arr_;
     }
 
-    // 3. Copy Constructor (Linear unwrapping)
     RecentCounter(const RecentCounter& other)
         : arr_(nullptr), capacity_(other.capacity_), current_size_(other.current_size_), head_(0), tail_(other.current_size_) {
         arr_ = new int[capacity_];
@@ -55,7 +46,6 @@ public:
         }
     }
 
-    // 4. Move Constructor (O(1) Ownership Transfer)
     RecentCounter(RecentCounter&& other) noexcept
         : arr_(other.arr_), capacity_(other.capacity_), current_size_(other.current_size_), head_(other.head_), tail_(other.tail_) {
         other.arr_ = nullptr;
@@ -65,7 +55,6 @@ public:
         other.tail_ = 0;
     }
 
-    // 5. Custom Swap Function (ADL-enabled)
     friend void swap(RecentCounter& first, RecentCounter& second) noexcept {
         using std::swap;
         swap(first.arr_, second.arr_);
@@ -81,14 +70,11 @@ public:
         return *this;
     }
 
-    // Ping Operation -> Amortized O(1) Time, Strict O(1) Space footprint
     int ping(int t) {
-        // Enqueue the new timestamp
         arr_[tail_] = t;
         tail_ = (tail_ + 1) % capacity_;
         current_size_++;
 
-        // Dequeue outdated timestamps (t - 3000)
         while (current_size_ > 0 && arr_[head_] < t - 3000) {
             head_ = (head_ + 1) % capacity_;
             current_size_--;
@@ -105,9 +91,6 @@ private:
     size_t tail_;
 };
 
-// ==========================================
-// Test Execution Engine (Separation of Concerns & Edge Cases)
-// ==========================================
 void runComparativeTest(const string& test_name, const int pings[], int size, const int expected[]) {
     cout << "Test Case: " << test_name << "\n";
 
