@@ -64,7 +64,6 @@ public:
         swap(first.tail_, second.tail_);
     }
 
-    // 6. Unified Assignment Operator
     RecentCounter& operator=(RecentCounter temp) {
         swap(*this, temp);
         return *this;

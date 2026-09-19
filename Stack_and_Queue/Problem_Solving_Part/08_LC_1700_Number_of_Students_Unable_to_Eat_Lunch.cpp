@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-// Specific using declarations to maintain namespace hygiene
 using std::cerr;
 using std::cout;
 using std::endl;
