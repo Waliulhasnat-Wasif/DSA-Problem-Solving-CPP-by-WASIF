@@ -35,15 +35,13 @@ private:
 class SolutionOptimized {
 public:
     bool backspaceCompare(const string& s, const string& t) const {
-        // Safe casting prevents unsigned underflow if string is empty
         int i = static_cast<int>(s.length()) - 1;
         int j = static_cast<int>(t.length()) - 1;
 
-        int skip_s = 0;  // Tracks the number of backspaces for string s
-        int skip_t = 0;  // Tracks the number of backspaces for string t
+        int skip_s = 0;
+        int skip_t = 0;
 
         while (i >= 0 || j >= 0) {
-            // Find the position of the next valid character in string s
             while (i >= 0) {
                 if (s[i] == '#') {
                     skip_s++;
@@ -52,11 +50,10 @@ public:
                     skip_s--;
                     i--;
                 } else {
-                    break;  // Found a valid character
+                    break;
                 }
             }
 
-            // Find the position of the next valid character in string t
             while (j >= 0) {
                 if (t[j] == '#') {
                     skip_t++;
@@ -65,16 +62,14 @@ public:
                     skip_t--;
                     j--;
                 } else {
-                    break;  // Found a valid character
+                    break;
                 }
             }
 
-            // Compare the valid characters
             if (i >= 0 && j >= 0 && s[i] != t[j]) {
-                return false;  // Characters mismatch
+                return false;
             }
 
-            // If expecting to compare a valid character with nothing
             if ((i >= 0) != (j >= 0)) {
                 return false;
             }
@@ -83,13 +78,10 @@ public:
             j--;
         }
 
-        return true;  // All valid characters matched
+        return true;
     }
 };
 
-// ==========================================
-// Test Execution Engine (Separation of Concerns & Edge Cases)
-// ==========================================
 void runComparativeTest(const string& test_name, const string& s, const string& t, bool expected) {
     cout << "Test Case: " << test_name << "\n";
     cout << "String s: \"" << s << "\" | String t: \"" << t << "\"\n";
@@ -109,30 +101,20 @@ void runComparativeTest(const string& test_name, const string& s, const string& 
     cout << string(80, '-') << "\n";
 }
 
-// ==========================================
-// Main Function (Clean & Safe Entry Point)
-// ==========================================
 int main() {
     cout << "--- Testing LC 844: Backspace String Compare ---\n\n";
 
     try {
-        // 1. Example 1: Basic functionality
         runComparativeTest("Example 1 (Basic Backspace)", "ab#c", "ad#c", true);
 
-        // 2. Example 2: Complete clearance
         runComparativeTest("Example 2 (Complete Clearance)", "ab##", "c#d#", true);
 
-        // 3. Example 3: Different valid characters
         runComparativeTest("Example 3 (Different Outputs)", "a#c", "b", false);
 
-        // 4. Edge Case: Backspacing an empty string
-        // Note: Problem states backspacing an empty text leaves it empty
         runComparativeTest("Edge Case 1 (Backspace on Empty)", "a##c", "#a#c", true);
 
-        // 5. Edge Case: Different lengths but same result
         runComparativeTest("Edge Case 2 (Uneven Lengths)", "bxj##tw", "bxo#j##tw", true);
 
-        // 6. Edge Case: One string becomes empty, the other does not
         runComparativeTest("Edge Case 3 (Empty vs Non-Empty)", "a", "a#", false);
 
     } catch (const exception& e) {
