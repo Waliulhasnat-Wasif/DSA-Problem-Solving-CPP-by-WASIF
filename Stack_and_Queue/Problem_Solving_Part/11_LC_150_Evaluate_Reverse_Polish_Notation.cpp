@@ -1,18 +1,9 @@
-/**
- * @file Evaluate_Reverse_Polish_Notation.cpp
- * @brief Enterprise-grade solution for LeetCode 150.
- * @details Compares an Explicit std::stack architecture against a highly
- *          Optimized Vector-Simulated Stack using advanced ASCII parsing.
- *          Features strict type safety, pre-allocation, and exception handling.
- */
-
 #include <iostream>
 #include <stack>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-// Specific using declarations to maintain namespace hygiene
 using std::cerr;
 using std::cout;
 using std::domain_error;
@@ -23,11 +14,6 @@ using std::string;
 using std::underflow_error;
 using std::vector;
 
-// ==========================================
-// Approach 1: Baseline Architecture (Explicit Stack)
-// Clear, straightforward logical implementation.
-// Time Complexity: O(N) | Space Complexity: O(N)
-// ==========================================
 class SolutionBaseline {
 public:
     int evalRPN(const vector<string>& tokens) const {
@@ -65,11 +51,6 @@ public:
     }
 };
 
-// ==========================================
-// Approach 2: Optimized Architecture (Vector as Stack & ASCII Parsing)
-// FAANG-level optimization using memory pre-allocation & ASCII boundary checks.
-// Time: Strict O(N) | Space: O(N) but highly cache-local
-// ==========================================
 class SolutionOptimized {
 public:
     int evalRPN(const vector<string>& tokens) const {
@@ -122,9 +103,6 @@ public:
     }
 };
 
-// ==========================================
-// Test Execution Engine (Separation of Concerns & Edge Cases)
-// ==========================================
 void runComparativeTest(const string& test_name, const vector<string>& tokens, int expected) {
     cout << "Test Case: " << test_name << "\n";
 
@@ -143,9 +121,6 @@ void runComparativeTest(const string& test_name, const vector<string>& tokens, i
     cout << string(80, '-') << "\n";
 }
 
-// ==========================================
-// Main Function (Clean & Safe Entry Point)
-// ==========================================
 int main() {
     cout << "--- Testing LC 150: Evaluate Reverse Polish Notation ---\n\n";
 
