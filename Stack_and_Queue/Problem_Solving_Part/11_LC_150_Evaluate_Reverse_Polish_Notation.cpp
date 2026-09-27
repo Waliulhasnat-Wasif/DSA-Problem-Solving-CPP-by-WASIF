@@ -56,17 +56,10 @@ public:
     int evalRPN(const vector<string>& tokens) const {
         vector<int> st;
 
-        // HIGHLIGHT: Memory Pre-allocation
-        // The maximum number of operands in an RPN is (tokens.size() / 2) + 1.
-        // Reserving this exact amount prevents any dynamic reallocation overhead.
         st.reserve((tokens.size() / 2) + 1);
 
         for (const string& token : tokens) {
-            // HIGHLIGHT: Advanced ASCII Parsing Trick
-            // Valid operators (+, -, *, /) are all ASCII values below '0' (48).
-            // A number can be single-digit (>= '0') or multi-digit/negative (len > 1)
             if (token.length() == 1 && token[0] < '0') {
-                // Defensive Exception Safety Parity
                 if (st.size() < 2) {
                     throw underflow_error("Error: Invalid RPN expression.");
                 }
