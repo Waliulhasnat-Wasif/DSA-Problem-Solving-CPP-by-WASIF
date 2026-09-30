@@ -5,7 +5,6 @@
 #include <utility>
 #include <vector>
 
-// Specific using declarations to maintain namespace hygiene
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -15,11 +14,6 @@ using std::string;
 using std::stringstream;
 using std::vector;
 
-// ==========================================
-// Approach 1: Baseline Architecture (StringStream Split)
-// Very readable, but incurs standard library string splitting overhead.
-// Time Complexity: O(N) | Space Complexity: O(N)
-// ==========================================
 class SolutionBaseline {
 public:
     string simplifyPath(const string& path) const {
@@ -27,7 +21,6 @@ public:
         stringstream ss(path);
         string token;
 
-        // Split the path based on '/'
         while (getline(ss, token, '/')) {
             if (token.empty() || token == ".") {
                 continue;
@@ -41,7 +34,6 @@ public:
             }
         }
 
-        // Reconstruct the canonical path
         string res = "";
         for (const string& dir : st) {
             res += '/';
