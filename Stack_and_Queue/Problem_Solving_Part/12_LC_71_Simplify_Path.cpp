@@ -44,12 +44,6 @@ public:
     }
 };
 
-// ==========================================
-// Approach 2: Optimized Architecture (Manual Parsing & Vector Stack)
-// FAANG-level optimization avoiding stringstream allocations.
-// Features std::move for zero-copy ownership transfer.
-// Time Complexity: Strict O(N) | Space Complexity: Strict O(N)
-// ==========================================
 class SolutionOptimized {
 public:
     string simplifyPath(const string& path) const {
