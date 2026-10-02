@@ -1,11 +1,3 @@
-/**
- * @file Decode_String.cpp
- * @brief Enterprise-grade solution for LeetCode 394.
- * @details Compares a Recursive Baseline (Implicit Stack) against a highly
- *          Optimized Iterative Dual-Stack architecture. Features std::move
- *          semantics to eliminate deep copying and strict type safety.
- */
-
 #include <cctype>
 #include <iostream>
 #include <stack>
@@ -13,7 +5,6 @@
 #include <string>
 #include <utility>
 
-// Specific using declarations to maintain namespace hygiene
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -23,11 +14,6 @@ using std::stack;
 using std::string;
 using std::underflow_error;
 
-// ==========================================
-// Approach 1: Baseline Architecture (Recursive)
-// Implicit Stack parsing. Susceptible to Stack Overflow on deep nesting.
-// Time Complexity: O(N * maxK) | Space Complexity: O(N) Call Stack
-// ==========================================
 class SolutionBaseline {
 public:
     string decodeString(const string& s) const {

@@ -2,6 +2,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -47,32 +48,34 @@ public:
 class SolutionOptimized {
 public:
     string simplifyPath(const string& path) const {
-        vector<string> st;
+        vector<std::string_view> st;
 
-        // Type safe size retrieval to prevent unsigned underflow traps
-        int n = static_cast<int>(path.length());
+        size_t n = path.length();
+        std::string_view path_view(path);
 
-        // Manual parsing for maximum performance
-        for (int i = 0; i < n; ++i) {
-            if (path[i] == '/') {
-                continue;
-            }
-
-            string temp;
-            while (i < n && path[i] != '/') {
-                temp += path[i];
+        size_t i = 0;
+        while (i < n) {
+            while (i < n && path[i] == '/') {
                 ++i;
             }
 
-            if (temp == ".") {
-                continue;  // Ignore current directory symbol
-            } else if (temp == "..") {
+            if (i >= n) {
+                break;
+            }
+
+            size_t start = i;
+            while (i < n && path[i] != '/') {
+                ++i;
+            }
+
+            std::string_view comp = path_view.substr(start, i - start);
+
+            if (comp == "..") {
                 if (!st.empty()) {
-                    st.pop_back();  // Go up one directory
+                    st.pop_back();
                 }
-            } else {
-                // HIGHLIGHT: std::move steals memory, preventing costly deep copies
-                st.push_back(std::move(temp));
+            } else if (comp != ".") {
+                st.emplace_back(comp);
             }
         }
 
@@ -81,10 +84,9 @@ public:
         }
 
         string res;
-        // HIGHLIGHT: Pre-allocate memory to prevent dynamic reallocation
         res.reserve(n);
 
-        for (const string& dir : st) {
+        for (const std::string_view& dir : st) {
             res += '/';
             res += dir;
         }
@@ -93,9 +95,6 @@ public:
     }
 };
 
-// ==========================================
-// Test Execution Engine (Separation of Concerns & Edge Cases)
-// ==========================================
 void runComparativeTest(const string& test_name, const string& path, const string& expected) {
     cout << "Test Case: " << test_name << "\n";
     cout << "Input Path: \"" << path << "\"\n";
@@ -115,29 +114,20 @@ void runComparativeTest(const string& test_name, const string& path, const strin
     cout << string(80, '-') << "\n";
 }
 
-// ==========================================
-// Main Function (Clean & Safe Entry Point)
-// ==========================================
 int main() {
     cout << "--- Testing LeetCode 71: Simplify Path ---\n\n";
 
     try {
-        // 1. Example 1: Trailing slash removal
         runComparativeTest("Example 1 (Trailing Slash)", "/home/", "/home");
 
-        // 2. Example 2: Multiple consecutive slashes
         runComparativeTest("Example 2 (Multiple Slashes)", "/home//foo/", "/home/foo");
 
-        // 3. Example 3: Parent directory processing
         runComparativeTest("Example 3 (Parent Directory)", "/home/user/Documents/../Pictures", "/home/user/Pictures");
 
-        // 4. Example 4: Root level boundary check
         runComparativeTest("Example 4 (Root Boundary)", "/../", "/");
 
-        // 5. Example 5: Multi-dot directories (valid names)
         runComparativeTest("Example 5 (Valid multi-dots)", "/.../a/../b/c/../d/./", "/.../b/d");
 
-        // 6. Edge Case: Deep navigation resolving to root
         runComparativeTest("Edge Case (Deep resolution to root)", "/a/./b/../../c/", "/c");
 
     } catch (const exception& e) {
