@@ -1,11 +1,3 @@
-/**
- * @file Remove_All_Adjacent_Duplicates_II.cpp
- * @brief Enterprise-grade solution for LeetCode 1209.
- * @details Compares a Baseline Stack of Pairs against the Ultimate In-Place
- *          Two-Pointer Overwrite architecture. Uses a compressed Group-Count
- *          Stack to achieve peak cache locality and O(1) string allocation.
- */
-
 #include <algorithm>
 #include <iostream>
 #include <stack>
@@ -14,7 +6,6 @@
 #include <utility>
 #include <vector>
 
-// Specific using declarations to maintain namespace hygiene
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -24,37 +15,34 @@ using std::stack;
 using std::string;
 using std::vector;
 
-// ==========================================
-// Approach 1: Baseline Architecture (Explicit Stack of Pairs)
-// Easy to conceptualize, but heavy on memory allocations.
-// Time Complexity: O(N) | Auxiliary Space: O(N) for stack + O(N) for string
-// ==========================================
 class SolutionBaseline {
 public:
     string removeDuplicates(const string& s, int k) const {
-        stack<pair<char, int>> st;
+        vector<pair<char, int>> st;
+        st.reserve(s.length());
 
         for (char c : s) {
-            if (!st.empty() && st.top().first == c) {
-                st.top().second++;
-                if (st.top().second == k) {
-                    st.pop();
+            if (!st.empty() && st.back().first == c) {
+                ++st.back().second;
+                if (st.back().second == k) {
+                    st.pop_back();  // Group reached size 'k', destroy it
                 }
             } else {
-                st.push({c, 1});
+                // HIGHLIGHT: emplace_back constructs the pair directly inside the
+                // vector's memory, avoiding temporary object creation overhead.
+                st.emplace_back(c, 1);
             }
         }
 
         string res;
-        // Pre-allocate maximum possible size to avoid reallocations
         res.reserve(s.length());
-        while (!st.empty()) {
-            res.append(st.top().second, st.top().first);
-            st.pop();
+
+        // HIGHLIGHT: C++17 Structured Binding for ultimate readability.
+        // We iterate forward natively, completely bypassing std::reverse.
+        for (const auto& [ch, count] : st) {
+            res.append(count, ch);
         }
 
-        // Stack yields reversed string, must reverse it back
-        std::reverse(res.begin(), res.end());
         return res;
     }
 };

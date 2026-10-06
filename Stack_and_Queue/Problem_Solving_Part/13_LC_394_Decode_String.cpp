@@ -1,6 +1,5 @@
 #include <cctype>
 #include <iostream>
-#include <stack>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -11,7 +10,6 @@ using std::cout;
 using std::endl;
 using std::exception;
 using std::isdigit;
-using std::stack;
 using std::string;
 using std::underflow_error;
 using std::vector;

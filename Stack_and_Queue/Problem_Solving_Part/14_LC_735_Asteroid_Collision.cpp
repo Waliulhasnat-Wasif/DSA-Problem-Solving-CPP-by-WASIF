@@ -25,9 +25,9 @@ using std::stack;
 using std::string;
 using std::vector;
 
-// Helper function to format vector output for the test engine
 string format_vector(const vector<int>& v) {
     string res = "[";
+    res.reserve(v.size() * 6 + 2);
     for (size_t i = 0; i < v.size(); ++i) {
         res += std::to_string(v[i]);
         if (i != v.size() - 1) {
