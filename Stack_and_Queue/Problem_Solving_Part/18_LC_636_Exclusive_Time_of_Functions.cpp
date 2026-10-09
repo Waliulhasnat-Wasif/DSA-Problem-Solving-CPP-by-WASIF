@@ -48,9 +48,9 @@ public:
             size_t pos1 = log.find(':');
             size_t pos2 = log.find(':', pos1 + 1);
 
-            size_t id = static_cast<size_t>(std::atoi(log.c_str()));
+            size_t id = static_cast<size_t>(std::atoi(log.data()));
             std::string_view type(log.data() + pos1 + 1, pos2 - pos1 - 1);
-            int time = std::atoi(log.c_str() + pos2 + 1);
+            int time = std::atoi(log.data() + pos2 + 1);
 
             if (type == "start") {
                 if (!st.empty()) {

@@ -141,9 +141,6 @@ public:
     }
 };
 
-// ==========================================
-// Test Execution Engine (Separation of Concerns & Edge Cases)
-// ==========================================
 string format_vector(const vector<int>& v) {
     if (v.empty()) {
         return "[]";
@@ -185,13 +182,10 @@ int main() {
     cout << "--- Testing LC 496: Next Greater Element I ---\n\n";
 
     try {
-        // 1. Example 1: Standard distinct queries
         runComparativeTest("Example 1 (Standard Queries)", {4, 1, 2}, {1, 3, 4, 2}, {-1, 3, -1});
 
-        // 2. Example 2: Continuous increasing elements
         runComparativeTest("Example 2 (Ascending Sequence)", {2, 4}, {1, 2, 3, 4}, {3, -1});
 
-        // 3. Edge Case: Monotonically decreasing nums2
         runComparativeTest("Edge Case 1 (Strictly Decreasing)", {5, 4, 3}, {5, 4, 3, 2, 1}, {-1, -1, -1});
 
     } catch (const exception& e) {
