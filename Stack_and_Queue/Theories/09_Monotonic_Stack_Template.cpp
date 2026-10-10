@@ -71,6 +71,13 @@ private:
 struct Element {
     int value;
     size_t index;
+
+    // Overload the less-than operator (<) to support the default
+    // std::less<Element> comparator. This compares elements based
+    // on their 'value' field when no custom lambda is provided.
+    bool operator<(const Element& other) const {
+        return this->value < other.value;
+    }
 };
 
 // Test Driver (Solving "Next Greater Element")

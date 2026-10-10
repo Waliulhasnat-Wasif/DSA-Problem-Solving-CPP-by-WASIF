@@ -103,17 +103,15 @@ public:
         // scope
     }
 
+    // 6a. Raw Copy Assignment Operator
     /*
-    Stack &operator=(const Stack &other)
-    {
-        if (this == &other)
-        {
+    Stack& operator=(const Stack& other) {
+        if (this == &other) {
             return *this;
         }
 
-        int *newArr = new int[other.capacity];
-        for (int i = 0; i < other.currentSize; i++)
-        {
+        int* newArr = new int[other.capacity];
+        for (int i = 0; i < other.currentSize; i++) {
             newArr[i] = other.arr[i];
         }
 
@@ -122,6 +120,27 @@ public:
         arr = newArr;
         capacity = other.capacity;
         currentSize = other.currentSize;
+
+        return *this;
+    }
+    */
+
+    // 6b. Raw Move Assignment Operator
+    /*
+    Stack& operator=(Stack&& other) noexcept {
+        if (this == &other) {
+            return *this;
+        }
+
+        delete[] arr;
+
+        arr = other.arr;
+        capacity = other.capacity;
+        currentSize = other.currentSize;
+
+        other.arr = nullptr;
+        other.capacity = 0;
+        other.currentSize = 0;
 
         return *this;
     }
