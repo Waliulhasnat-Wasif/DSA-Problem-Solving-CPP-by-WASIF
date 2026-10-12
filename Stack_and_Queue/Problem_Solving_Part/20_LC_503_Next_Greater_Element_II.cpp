@@ -83,6 +83,35 @@ public:
     }
 };
 
+class SolutionOptimized_V3 {
+public:
+    vector<int> nextGreaterElements(const vector<int>& nums) const {
+        int n = static_cast<int>(nums.size());
+        vector<int> res(n, -1);
+
+        vector<int> st;
+        st.reserve(n);
+
+        for (int i = 2 * n - 1; i >= 0; --i) {
+            int circular_idx = i % n;
+
+            // আমার চেয়ে ছোট বা সমানদের পপ করে দাও
+            while (!st.empty() && nums[st.back()] <= nums[circular_idx]) {
+                st.pop_back();
+            }
+
+            // ১ম চক্করে উত্তর স্টোর করো (টপে থাকা উপাদানই আমার উত্তর)
+            if (i < n) {
+                res[circular_idx] = st.empty() ? -1 : nums[st.back()];
+            }
+
+            st.push_back(circular_idx);
+        }
+
+        return res;
+    }
+};
+
 string format_vector(const vector<int>& v) {
     if (v.empty()) {
         return "[]";
