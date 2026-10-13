@@ -95,12 +95,10 @@ public:
         for (int i = 2 * n - 1; i >= 0; --i) {
             int circular_idx = i % n;
 
-            // আমার চেয়ে ছোট বা সমানদের পপ করে দাও
             while (!st.empty() && nums[st.back()] <= nums[circular_idx]) {
                 st.pop_back();
             }
 
-            // ১ম চক্করে উত্তর স্টোর করো (টপে থাকা উপাদানই আমার উত্তর)
             if (i < n) {
                 res[circular_idx] = st.empty() ? -1 : nums[st.back()];
             }
