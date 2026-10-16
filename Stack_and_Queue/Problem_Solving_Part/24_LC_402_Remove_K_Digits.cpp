@@ -49,7 +49,7 @@ public:
         for (char digit : num) {
             while (k > 0 && !st.empty() && st.back() > digit) {
                 st.pop_back();
-                k--;
+                --k;
             }
 
             if (!st.empty() || digit != '0') {
@@ -59,7 +59,7 @@ public:
 
         while (k > 0 && !st.empty()) {
             st.pop_back();
-            k--;
+            --k;
         }
 
         return st.empty() ? "0" : st;
@@ -89,7 +89,9 @@ int main() {
     cout << "--- Testing LC 402: Remove K Digits (Interview Mode) ---\n\n";
 
     try {
-        runComparativeTest("Example 1 (Standard Fluctuations)", "1432219", 3, "1219");
+        runComparativeTest("Example 0 (Standard Fluctuations)", "1432219", 3, "1219");
+
+        runComparativeTest("Example 1 (Standard Fluctuations)", "1432219", 5, "11");
 
         runComparativeTest("Example 2 (Leading Zeros)", "10200", 1, "200");
 
