@@ -10,34 +10,24 @@ using std::endl;
 using std::string;
 using std::vector;
 
-// ==========================================
-// Approach 1: Baseline Architecture (Monotonic Decreasing Stack)
-// Proves structural understanding of boundaries.
-// Time Complexity: O(N) | Space Complexity: O(N)
-// ==========================================
 class SolutionBaseline {
 public:
     int trap(const vector<int>& height) const {
         size_t n = height.size();
-        if (n < 3) return 0;  // Need at least 3 bars to form a valley
+        if (n < 3) return 0;
 
         int total_water = 0;
-        vector<size_t> st;  // Stores indices
+        vector<size_t> st;
         st.reserve(n);
 
         for (size_t i = 0; i < n; ++i) {
-            // Found a taller bar! This means the bars inside the stack
-            // might form a valley bounded by this new taller bar.
             while (!st.empty() && height[i] > height[st.back()]) {
                 size_t valley_idx = st.back();
                 st.pop_back();
 
-                // If stack is empty, there is no left boundary to hold the water
                 if (st.empty()) break;
 
                 size_t left_bound_idx = st.back();
-
-                // Calculate dimensions of the trapped water
                 size_t width = i - left_bound_idx - 1;
                 int bounded_height = std::min(height[i], height[left_bound_idx]) - height[valley_idx];
 
@@ -50,11 +40,6 @@ public:
     }
 };
 
-// ==========================================
-// Approach 2: Interview-Optimized Architecture (Two Pointers)
-// FAANG-level execution. Eliminates stack overhead completely.
-// Time Complexity: Strict O(N) | Space Complexity: O(1) Zero-allocation!
-// ==========================================
 class SolutionOptimized {
 public:
     int trap(const vector<int>& height) const {
@@ -67,21 +52,19 @@ public:
         int right_max = 0;
         int total_water = 0;
 
-        // Two Pointers logic: The water level at any bar is determined strictly
-        // by the SHORTER of the maximum bars to its left and right.
         while (left < right) {
             if (height[left] < height[right]) {
                 if (height[left] >= left_max) {
-                    left_max = height[left];  // Update highest bar on left
+                    left_max = height[left];
                 } else {
-                    total_water += left_max - height[left];  // Trap water
+                    total_water += left_max - height[left];
                 }
                 ++left;
             } else {
                 if (height[right] >= right_max) {
-                    right_max = height[right];  // Update highest bar on right
+                    right_max = height[right];
                 } else {
-                    total_water += right_max - height[right];  // Trap water
+                    total_water += right_max - height[right];
                 }
                 --right;
             }
@@ -91,9 +74,6 @@ public:
     }
 };
 
-// ==========================================
-// Test Execution Engine (Separation of Concerns & Edge Cases)
-// ==========================================
 string format_vector(const vector<int>& v) {
     if (v.empty()) return "[]";
     string res = "[";
@@ -126,9 +106,6 @@ void runComparativeTest(const string& test_name, const vector<int>& height, int 
     cout << string(80, '-') << "\n";
 }
 
-// ==========================================
-// Main Function (Clean & Safe Entry Point)
-// ==========================================
 int main() {
     cout << "--- Testing LC 42: Trapping Rain Water ---\n\n";
 
