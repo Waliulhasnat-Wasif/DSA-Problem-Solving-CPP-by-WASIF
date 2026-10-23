@@ -12,10 +12,6 @@ using std::endl;
 using std::string;
 using std::vector;
 
-// ==========================================
-// Approach 1: Baseline Architecture (Brute-Force)
-// Time Complexity: O(N * K) | Space Complexity: O(1)
-// ==========================================
 class SolutionBaseline {
 public:
     vector<int> maxSlidingWindow(const vector<int>& nums, int k) const {
@@ -37,10 +33,6 @@ public:
     }
 };
 
-// ==========================================
-// Approach 2: Interview Standard (std::deque)
-// Time Complexity: O(N) | Space Complexity: O(K)
-// ==========================================
 class SolutionStandard {
 public:
     vector<int> maxSlidingWindow(const vector<int>& nums, int k) const {
@@ -54,19 +46,16 @@ public:
         deque<size_t> dq;
 
         for (size_t i = 0; i < n; ++i) {
-            // Remove indices out of the current window
             if (!dq.empty() && i >= K && dq.front() == i - K) {
                 dq.pop_front();
             }
 
-            // Maintain Monotonicity (Decreasing)
             while (!dq.empty() && nums[dq.back()] <= nums[i]) {
                 dq.pop_back();
             }
 
             dq.push_back(i);
 
-            // Record max
             if (i >= K - 1) {
                 res.push_back(nums[dq.front()]);
             }
@@ -75,15 +64,8 @@ public:
     }
 };
 
-// ==========================================
-// Approach 3: Ultra-Optimized (Custom Circular Buffer)
-// FAANG Flex: Replaces std::deque with a fixed-size vector to guarantee
-// contiguous memory, eliminating chunk-allocation overhead and cache misses.
-// Time Complexity: Strict O(N) | Space Complexity: O(K) contiguous
-// ==========================================
 class SolutionExtreme {
 private:
-    // Encapsulated Circular Buffer for clean separation of concerns
     struct CircularDeque {
         vector<size_t> data;
         size_t head = 0;
@@ -99,23 +81,33 @@ private:
         size_t front() const {
             return data[head];
         }
+
         size_t back() const {
-            return data[(tail + capacity - 1) % capacity];
+            return data[tail == 0 ? capacity - 1 : tail - 1];
         }
 
         void pop_front() {
-            head = (head + 1) % capacity;
+            head++;
+            if (head == capacity) {
+                head = 0;
+            }
             count--;
         }
 
         void pop_back() {
-            tail = (tail + capacity - 1) % capacity;
+            if (tail == 0) {
+                tail = capacity - 1;
+            } else {
+                tail--;
+            }
             count--;
         }
 
         void push_back(size_t val) {
-            data[tail] = val;
-            tail = (tail + 1) % capacity;
+            data[tail++] = val;
+            if (tail == capacity) {
+                tail = 0;
+            }
             count++;
         }
     };
@@ -134,20 +126,16 @@ public:
         for (size_t i = 0; i < n; ++i) {
             int current_val = nums[i];
 
-            // 1. Remove indices strictly OUT of the window
             if (!dq.empty() && i >= K && dq.front() == i - K) {
                 dq.pop_front();
             }
 
-            // 2. Maintain Monotonicity (Decreasing)
             while (!dq.empty() && nums[dq.back()] <= current_val) {
                 dq.pop_back();
             }
 
-            // 3. Push the current index
             dq.push_back(i);
 
-            // 4. Record the max for the window
             if (i >= K - 1) {
                 res.push_back(nums[dq.front()]);
             }
@@ -197,9 +185,6 @@ void runComparativeTest(const string& test_name, const vector<int>& nums, int k,
     cout << string(80, '-') << "\n";
 }
 
-// ==========================================
-// Main Function (Clean & Safe Entry Point)
-// ==========================================
 int main() {
     cout << "--- Testing LC 239: Sliding Window Max (Extreme Edition) ---\n\n";
 
