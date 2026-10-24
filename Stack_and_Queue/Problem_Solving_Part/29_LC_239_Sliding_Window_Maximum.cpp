@@ -79,28 +79,36 @@ private:
             return count == 0;
         }
         size_t front() const {
+            if (empty()) {
+                return 0;
+            }
+
             return data[head];
         }
 
         size_t back() const {
+            if (empty()) {
+                return 0;
+            }
+
             return data[tail == 0 ? capacity - 1 : tail - 1];
         }
 
         void pop_front() {
-            head++;
+            ++head;
             if (head == capacity) {
                 head = 0;
             }
-            count--;
+            --count;
         }
 
         void pop_back() {
             if (tail == 0) {
                 tail = capacity - 1;
             } else {
-                tail--;
+                --tail;
             }
-            count--;
+            --count;
         }
 
         void push_back(size_t val) {
@@ -108,7 +116,7 @@ private:
             if (tail == capacity) {
                 tail = 0;
             }
-            count++;
+            ++count;
         }
     };
 
