@@ -46,7 +46,7 @@ public:
         deque<size_t> dq;
 
         for (size_t i = 0; i < n; ++i) {
-            if (!dq.empty() && i >= K && dq.front() == i - K) {
+            while (!dq.empty() && dq.front() + K <= i) {
                 dq.pop_front();
             }
 
@@ -134,7 +134,7 @@ public:
         for (size_t i = 0; i < n; ++i) {
             int current_val = nums[i];
 
-            if (!dq.empty() && i >= K && dq.front() == i - K) {
+            while (!dq.empty() && dq.front() + K <= i) {
                 dq.pop_front();
             }
 
