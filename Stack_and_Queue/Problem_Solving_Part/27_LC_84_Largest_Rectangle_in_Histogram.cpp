@@ -28,6 +28,45 @@ public:
     }
 };
 
+class SolutionTwoPass {
+public:
+    int largestRectangleArea(const vector<int>& heights) const {
+        int n = static_cast<int>(heights.size());
+        if (n == 0) return 0;
+
+        vector<int> left(n), right(n);
+        vector<int> st;
+        st.reserve(n);
+
+        for (int i = 0; i < n; ++i) {
+            while (!st.empty() && heights[st.back()] >= heights[i]) {
+                st.pop_back();
+            }
+            left[i] = st.empty() ? -1 : st.back();
+            st.push_back(i);
+        }
+
+        st.clear();
+
+        for (int i = n - 1; i >= 0; --i) {
+            while (!st.empty() && heights[st.back()] >= heights[i]) {
+                st.pop_back();
+            }
+            right[i] = st.empty() ? n : st.back();
+            st.push_back(i);
+        }
+
+        int max_area = 0;
+        for (int i = 0; i < n; ++i) {
+            int width = right[i] - left[i] - 1;
+            int area = heights[i] * width;
+            max_area = std::max(max_area, area);
+        }
+
+        return max_area;
+    }
+};
+
 class SolutionOptimized {
 public:
     int largestRectangleArea(const vector<int>& heights) const {
@@ -49,7 +88,8 @@ public:
 
                 max_area = std::max(max_area, h * static_cast<int>(w));
             }
-            st.push_back(i);
+
+            if (i < n) st.push_back(i);
         }
 
         return max_area;
@@ -79,13 +119,16 @@ void runComparativeTest(const string& test_name, const vector<int>& heights, int
     cout << "Input: heights = " << format_vector(heights) << "\n";
 
     SolutionOptimized sol_opt;
+    SolutionTwoPass sol_two_pass;
     SolutionBaseline sol_base;
 
     int res_opt = sol_opt.largestRectangleArea(heights);
+    int res_two_pass = sol_two_pass.largestRectangleArea(heights);
     int res_base = sol_base.largestRectangleArea(heights);
 
     cout << "Expected:  " << expected << "\n";
     cout << "Optimized: " << res_opt << "\n";
+    cout << "Two_pass:  " << res_two_pass << "\n";
     cout << "Baseline:  " << res_base << "\n";
 
     cout << "Result:    " << (res_opt == expected && res_base == expected ? "[PASS]" : "[FAIL]") << "\n";

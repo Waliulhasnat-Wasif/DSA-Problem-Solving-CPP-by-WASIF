@@ -21,7 +21,7 @@ public:
         st.reserve(n);
 
         for (size_t i = 0; i < n; ++i) {
-            while (!st.empty() && height[i] > height[st.back()]) {
+            while (!st.empty() && height[st.back()] < height[i]) {
                 size_t valley_idx = st.back();
                 st.pop_back();
 

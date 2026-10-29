@@ -12,10 +12,6 @@ using std::vector;
 
 const int MOD = 1e9 + 7;
 
-// ==========================================
-// Approach 1: Baseline Architecture (Brute-Force)
-// Time Complexity: O(N^2) | Space Complexity: O(1)
-// ==========================================
 class SolutionBaseline {
 public:
     int sumSubarrayMins(const vector<int>& arr) const {
@@ -33,12 +29,6 @@ public:
     }
 };
 
-// ==========================================
-// Approach 2: Standard Interview Architecture (Two-Pass)
-// Uses two monotonic stacks to explicitly find left and right bounds.
-// Handles duplicates using strictly less (`<`) and less-equal (`<=`).
-// Time Complexity: Strict O(N) | Space Complexity: O(N)
-// ==========================================
 class SolutionStandard {
 public:
     int sumSubarrayMins(const vector<int>& arr) const {
@@ -47,19 +37,16 @@ public:
         vector<size_t> st;
         st.reserve(n);
 
-        // Find previous strictly less element
         for (size_t i = 0; i < n; ++i) {
             while (!st.empty() && arr[st.back()] >= arr[i]) {
                 st.pop_back();
             }
-            // If stack empty, distance is i + 1. Else distance is i - st.back()
             left[i] = st.empty() ? (i + 1) : (i - st.back());
             st.push_back(i);
         }
 
         st.clear();
 
-        // Find next less or equal element
         for (size_t i = n; i > 0; --i) {
             size_t idx = i - 1;
             while (!st.empty() && arr[st.back()] > arr[idx]) {
@@ -79,55 +66,36 @@ public:
     }
 };
 
-// ==========================================
-// Approach 3: Ultra-Optimized Architecture (One-Pass Extreme)
-// FAANG Flex: Solves the problem in a single pass without extra arrays
-// using the 'Sentinel Virtual Zero' trick.
-// Time Complexity: Strict O(N) | Space Complexity: O(N) (Stack only)
-// ==========================================
 class SolutionExtreme {
 public:
     int sumSubarrayMins(const vector<int>& arr) const {
         size_t n = arr.size();
         long long total_sum = 0;
 
-        // Stack stores INDICES (Crucial for distance calculation)
         vector<size_t> st;
         st.reserve(n);
 
-        // Loop runs up to `n` (inclusive) to trigger the Sentinel Zero
         for (size_t i = 0; i <= n; ++i) {
-            // The problem states 1 <= arr[i].
-            // A virtual 0 at the end forces all remaining elements to pop.
             int curr_val = (i == n) ? 0 : arr[i];
 
-            // Pop elements greater than or equal to curr_val
-            // Using `>=` perfectly handles duplicates without double counting!
             while (!st.empty() && arr[st.back()] >= curr_val) {
                 size_t popped_idx = st.back();
                 st.pop_back();
 
-                // Distance to the left boundary (Previous Smaller Element)
                 size_t left_dist = st.empty() ? (popped_idx + 1) : (popped_idx - st.back());
-
-                // Distance to the right boundary (Next Smaller or Equal Element)
                 size_t right_dist = i - popped_idx;
 
-                // Contribution = value * left_dist * right_dist
                 long long contribution = (1LL * arr[popped_idx] * left_dist * right_dist) % MOD;
-
                 total_sum = (total_sum + contribution) % MOD;
             }
-            st.push_back(i);
+
+            if (i < n) st.push_back(i);
         }
 
         return static_cast<int>(total_sum);
     }
 };
 
-// ==========================================
-// Test Execution Engine
-// ==========================================
 string format_vector(const vector<int>& v) {
     if (v.empty()) return "[]";
     string res = "[";
@@ -171,8 +139,6 @@ int main() {
 
         runComparativeTest("Example 2 (Large Values)", {11, 81, 94, 43, 3}, 444);
 
-        // The Duplicate Bug Case (Prevents over-counting)
-        // [2]*3 + [2,2]*2 + [2,2,2]*1 = 6+4+2 = 12
         runComparativeTest("Edge Case 1 (Duplicates)", {2, 2, 2}, 12);
 
         runComparativeTest("Edge Case 2 (Descending)", {4, 3, 2, 1}, 20);
