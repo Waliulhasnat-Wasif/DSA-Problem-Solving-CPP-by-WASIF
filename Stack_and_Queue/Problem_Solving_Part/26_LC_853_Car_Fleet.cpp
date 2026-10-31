@@ -28,7 +28,7 @@ public:
         for (const auto& pair : cars) {
             if (pair.second > max_time) {
                 max_time = pair.second;
-                fleets++;
+                ++fleets;
             }
         }
 
