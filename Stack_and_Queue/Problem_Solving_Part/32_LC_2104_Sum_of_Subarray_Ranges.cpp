@@ -1,13 +1,3 @@
-/**
- * @file Sum_of_Subarray_Ranges.cpp
- * @brief FAANG Interview-optimized combined solution for LeetCode 2104.
- * @details Features 2 architectures:
- *          1. O(N^2) Baseline (Valid and accepted for N=1000 constraints).
- *          2. O(N) Extreme (Follow-up standard) using the mathematical property:
- *             Sum of Ranges = Sum of Subarray Maxs - Sum of Subarray Mins.
- *          Implements the Sentinel Zero trick adapted with numeric limits.
- */
-
 #include <algorithm>
 #include <iostream>
 #include <limits>
@@ -21,11 +11,6 @@ using std::endl;
 using std::string;
 using std::vector;
 
-// ==========================================
-// Approach 1: Baseline Architecture (Brute-Force / Optimized O(N^2))
-// Time Complexity: O(N^2) | Space Complexity: O(1)
-// Perfectly valid for N = 1000, acts as our source of truth.
-// ==========================================
 class SolutionBaseline {
 public:
     long long subArrayRanges(const vector<int>& nums) const {
@@ -46,12 +31,6 @@ public:
     }
 };
 
-// ==========================================
-// Approach 2: Ultra-Optimized Architecture (O(N) Extreme Sentinel)
-// FAANG Follow-up standard. Calculates Sum(Max) and Sum(Min) independently
-// using the Duplicate-Safe Sentinel Stack architecture.
-// Time Complexity: Strict O(N) | Space Complexity: O(N)
-// ==========================================
 class SolutionExtreme {
 public:
     long long subArrayRanges(const vector<int>& nums) const {
@@ -63,14 +42,9 @@ public:
         vector<size_t> st;
         st.reserve(n);
 
-        // --------------------------------------------------------
-        // Step 1: Calculate Sum of Subarray Minimums
-        // Sentinel Strategy: Use INT_MIN to force pop all elements at the end
-        // --------------------------------------------------------
         for (size_t i = 0; i <= n; ++i) {
             int curr_val = (i == n) ? std::numeric_limits<int>::min() : nums[i];
 
-            // Pop elements greater than or equal to curr_val
             while (!st.empty() && nums[st.back()] >= curr_val) {
                 size_t popped_idx = st.back();
                 st.pop_back();
@@ -80,19 +54,15 @@ public:
 
                 sum_min += 1LL * nums[popped_idx] * left_dist * right_dist;
             }
-            st.push_back(i);
+
+            if (i < n) st.push_back(i);
         }
 
         st.clear();
 
-        // --------------------------------------------------------
-        // Step 2: Calculate Sum of Subarray Maximums
-        // Sentinel Strategy: Use INT_MAX to force pop all elements at the end
-        // --------------------------------------------------------
         for (size_t i = 0; i <= n; ++i) {
             int curr_val = (i == n) ? std::numeric_limits<int>::max() : nums[i];
 
-            // Pop elements less than or equal to curr_val
             while (!st.empty() && nums[st.back()] <= curr_val) {
                 size_t popped_idx = st.back();
                 st.pop_back();
@@ -102,19 +72,14 @@ public:
 
                 sum_max += 1LL * nums[popped_idx] * left_dist * right_dist;
             }
-            st.push_back(i);
+
+            if (i < n) st.push_back(i);
         }
 
-        // --------------------------------------------------------
-        // Final Math: Sum(Ranges) = Sum(Max) - Sum(Min)
-        // --------------------------------------------------------
         return sum_max - sum_min;
     }
 };
 
-// ==========================================
-// Test Execution Engine
-// ==========================================
 string format_vector(const vector<int>& v) {
     if (v.empty()) {
         return "[]";
@@ -162,7 +127,6 @@ int main() {
 
         runComparativeTest("Example 3 (Negatives)", {4, -2, -3, 4, 1}, 59);
 
-        // The Duplicate Bug Case check
         runComparativeTest("Edge Case (All Identical)", {5, 5, 5, 5}, 0);
 
     } catch (const std::exception& e) {
