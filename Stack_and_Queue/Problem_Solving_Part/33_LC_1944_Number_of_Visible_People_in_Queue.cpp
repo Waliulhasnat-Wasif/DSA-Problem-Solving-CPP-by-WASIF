@@ -21,7 +21,7 @@ public:
 
             for (size_t j = i + 1; j < n; ++j) {
                 if (heights[j] > max_seen_so_far) {
-                    visible_count++;
+                    ++visible_count;
                     max_seen_so_far = heights[j];
                 }
                 if (heights[j] >= heights[i]) {
@@ -40,27 +40,19 @@ public:
         size_t n = heights.size();
         vector<int> res(n, 0);
 
-        // Stack stores INDICES, maintaining a strictly decreasing order of heights
         vector<size_t> st;
         st.reserve(n);
 
-        // FAANG Flex: The safest unsigned reverse loop in C++
-        // `i-- > 0` checks if i > 0, then decrements it.
-        // Starts at n-1 and perfectly safely terminates at 0.
         for (size_t i = n; i-- > 0;) {
             int visible_count = 0;
 
-            // Pop all strictly shorter people to our right.
-            // We can see them, but they won't block the view of taller people behind.
             while (!st.empty() && heights[st.back()] < heights[i]) {
                 st.pop_back();
                 ++visible_count;
             }
 
-            // If stack not empty, the person at the top is TALLER than us.
-            // We can see them, but our view is immediately blocked by them.
             if (!st.empty()) {
-                visible_count++;
+                ++visible_count;
             }
 
             res[i] = visible_count;
