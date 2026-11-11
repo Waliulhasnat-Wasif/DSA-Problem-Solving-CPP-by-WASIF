@@ -14,7 +14,7 @@ using std::vector;
 class StockSpanner {
 public:
     StockSpanner() {
-        st.reserve(100000);
+        st.reserve(10000);
     }
 
     int next(int price) {

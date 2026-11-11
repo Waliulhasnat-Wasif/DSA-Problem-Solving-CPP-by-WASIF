@@ -52,6 +52,28 @@ public:
     }
 };
 
+class SolutionOptimizedv2 {
+public:
+    vector<int> dailyTemperatures(const vector<int>& temperatures) const {
+        size_t n = temperatures.size();
+        vector<int> res(n, 0);
+
+        vector<size_t> st;
+        st.reserve(n);
+
+        for (size_t i = n; i-- > 0;) {
+            while (!st.empty() && temperatures[st.back()] <= temperatures[i]) {
+                st.pop_back();
+            }
+
+            res[i] = st.empty() ? 0 : static_cast<int>(st.back() - i);
+            st.push_back(i);
+        }
+
+        return res;
+    }
+};
+
 string format_vector(const vector<int>& v) {
     if (v.empty()) {
         return "[]";
@@ -74,16 +96,19 @@ void runComparativeTest(const string& test_name, const vector<int>& temps, const
     cout << "Temperatures: " << format_vector(temps) << "\n";
 
     SolutionOptimized sol_opt;
+    SolutionOptimizedv2 sol_opt2;
     SolutionBaseline sol_base;
 
     vector<int> res_opt = sol_opt.dailyTemperatures(temps);
+    vector<int> res_opt2 = sol_opt2.dailyTemperatures(temps);
     vector<int> res_base = sol_base.dailyTemperatures(temps);
 
-    cout << "Expected:  " << format_vector(expected) << "\n";
-    cout << "Optimized: " << format_vector(res_opt) << "\n";
+    cout << "Expected:     " << format_vector(expected) << "\n";
+    cout << "Optimized:    " << format_vector(res_opt) << "\n";
+    cout << "Optimized_v2: " << format_vector(res_opt2) << "\n";
     cout << "Baseline:  " << format_vector(res_base) << "\n";
 
-    cout << "Result: " << (res_opt == expected && res_base == expected ? "[PASS]" : "[FAIL]") << "\n";
+    cout << "Result: " << (res_opt == expected && res_opt2 == expected && res_base == expected ? "[PASS]" : "[FAIL]") << "\n";
 
     cout << string(80, '-') << "\n";
 }
