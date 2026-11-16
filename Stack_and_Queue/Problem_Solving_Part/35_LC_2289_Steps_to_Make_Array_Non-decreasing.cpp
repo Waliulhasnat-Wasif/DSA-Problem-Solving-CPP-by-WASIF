@@ -10,11 +10,6 @@ using std::endl;
 using std::string;
 using std::vector;
 
-// ==========================================
-// Approach 1: Baseline Architecture (Brute-Force Simulation)
-// Simulates the exact physical removal of elements step-by-step.
-// Time Complexity: Worst case O(N^2) | Space Complexity: O(N) for buffer
-// ==========================================
 class SolutionBaseline {
 public:
     int totalSteps(const vector<int>& nums) const {
@@ -42,52 +37,37 @@ public:
 
             if (!changed) break;  // Array is completely non-decreasing
             current = next_arr;
-            steps++;
+            ++steps;
         }
 
         return steps;
     }
 };
 
-// ==========================================
-// Approach 2: Ultra-Optimized Architecture (Monotonic Stack + DP)
-// FAANG Flex: Uses a monotonic decreasing stack to find the nearest strictly
-// greater element to the left, while maintaining a DP array to track how many
-// steps it takes to clear intermediate smaller elements.
-// Time Complexity: Strict O(N) | Space Complexity: O(N)
-// ==========================================
 class SolutionExtreme {
 public:
     int totalSteps(const vector<int>& nums) const {
         size_t n = nums.size();
         if (n == 0) return 0;
 
-        vector<int> dp(n, 0);  // dp[i] = steps required to delete nums[i]
+        vector<int> dp(n, 0);
         int max_steps = 0;
 
-        // Stack stores INDICES, maintaining a strictly decreasing order of values
         vector<size_t> st;
         st.reserve(n);
 
         for (size_t i = 0; i < n; ++i) {
             int current_steps = 0;
 
-            // Pop smaller or equal elements, they cannot delete nums[i].
-            // However, nums[i] must wait for them to be deleted before it interacts
-            // with the larger element to its left.
             while (!st.empty() && nums[st.back()] <= nums[i]) {
                 current_steps = std::max(current_steps, dp[st.back()]);
                 st.pop_back();
             }
 
-            // If stack is NOT empty, top element is strictly greater than nums[i].
-            // It will delete nums[i] right after all intermediate elements are gone.
             if (!st.empty()) {
                 dp[i] = current_steps + 1;
                 max_steps = std::max(max_steps, dp[i]);
             }
-            // If stack IS empty, nums[i] is the largest seen so far.
-            // It survives forever. dp[i] remains 0.
 
             st.push_back(i);
         }
@@ -96,9 +76,6 @@ public:
     }
 };
 
-// ==========================================
-// Test Execution Engine
-// ==========================================
 string format_vector(const vector<int>& v) {
     if (v.empty()) return "[]";
 
