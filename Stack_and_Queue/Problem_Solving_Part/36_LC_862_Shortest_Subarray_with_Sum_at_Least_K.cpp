@@ -1,0 +1,173 @@
+#include <algorithm>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+using std::cerr;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+
+// ==========================================
+// Approach 1: Baseline Architecture (Brute-Force Prefix Sum)
+// Proves the mathematical correctness of subarray sums.
+// Time Complexity: O(N^2) | Space Complexity: O(N)
+// ==========================================
+class SolutionBaseline {
+public:
+    int shortestSubarray(const vector<int>& nums, int k) const {
+        size_t n = nums.size();
+        vector<long long> P(n + 1, 0);
+
+        for (size_t i = 0; i < n; ++i) {
+            P[i + 1] = P[i] + nums[i];
+        }
+
+        size_t min_len = n + 1;
+
+        for (size_t i = 0; i < n; ++i) {
+            for (size_t j = i + 1; j <= n; ++j) {
+                if (P[j] - P[i] >= static_cast<long long>(k)) {
+                    min_len = std::min(min_len, j - i);
+                }
+            }
+        }
+
+        return min_len <= n ? static_cast<int>(min_len) : -1;
+    }
+};
+
+// ==========================================
+// Approach 2: Ultra-Optimized Architecture (Monotonic Flat Deque)
+// FAANG Flex: Custom contiguous memory deque.
+// Popping from the back ensures Monotonic Increasing property.
+// Popping from the front locks in the shortest lengths.
+// Time Complexity: Strict O(N) | Space Complexity: O(N) contiguous
+// ==========================================
+class SolutionExtreme {
+private:
+    struct FlatDeque {
+        vector<size_t> data;
+        size_t head = 0;
+        size_t tail = 0;
+
+        explicit FlatDeque(size_t cap) : data(cap) {}
+
+        bool empty() const {
+            return head == tail;
+        }
+        size_t front() const {
+            return data[head];
+        }
+        size_t back() const {
+            return data[tail - 1];
+        }
+
+        void pop_front() {
+            head++;
+        }
+        void pop_back() {
+            tail--;
+        }
+        void push_back(size_t idx) {
+            data[tail++] = idx;
+        }
+    };
+
+public:
+    int shortestSubarray(const vector<int>& nums, int k) const {
+        size_t n = nums.size();
+
+        // Use long long for prefix sums to prevent overflow
+        vector<long long> P(n + 1, 0);
+        for (size_t i = 0; i < n; ++i) {
+            P[i + 1] = P[i] + nums[i];
+        }
+
+        // Initialize with an impossible length (n + 1)
+        size_t min_len = n + 1;
+        long long K = static_cast<long long>(k);
+
+        // Capacity is n + 1 because the prefix sum array has size n + 1
+        FlatDeque dq(n + 1);
+
+        for (size_t i = 0; i <= n; ++i) {
+            // 1. Lock in the shortest valid subarray from the front
+            while (!dq.empty() && P[i] - P[dq.front()] >= K) {
+                min_len = std::min(min_len, i - dq.front());
+                dq.pop_front();
+            }
+
+            // 2. Maintain Monotonic Increasing property
+            while (!dq.empty() && P[i] <= P[dq.back()]) {
+                dq.pop_back();
+            }
+
+            // 3. Push the current index
+            dq.push_back(i);
+        }
+
+        return min_len <= n ? static_cast<int>(min_len) : -1;
+    }
+};
+
+// ==========================================
+// Test Execution Engine
+// ==========================================
+string format_vector(const vector<int>& v) {
+    if (v.empty()) {
+        return "[]";
+    }
+
+    string res = "[";
+    res.reserve(v.size() * 6 + 2);
+
+    for (size_t i = 0; i < v.size() - 1; ++i) {
+        res += std::to_string(v[i]);
+        res += ", ";
+    }
+
+    res += std::to_string(v.back());
+    res += "]";
+    return res;
+}
+
+void runComparativeTest(const string& test_name, const vector<int>& nums, int k, int expected) {
+    cout << "Test Case: " << test_name << "\n";
+    cout << "Input: nums = " << format_vector(nums) << ", k = " << k << "\n";
+
+    SolutionExtreme sol_ext;
+    SolutionBaseline sol_base;
+
+    int res_ext = sol_ext.shortestSubarray(nums, k);
+    int res_base = sol_base.shortestSubarray(nums, k);
+
+    cout << "Expected:  " << expected << "\n";
+    cout << "Extreme:   " << res_ext << "\n";
+    cout << "Baseline:  " << res_base << "\n";
+
+    bool passed = (res_ext == expected && res_base == expected);
+    cout << "Result:    " << (passed ? "[PASS]" : "[FAIL]") << "\n";
+    cout << string(80, '-') << "\n";
+}
+
+int main() {
+    cout << "--- Testing LC 862: Shortest Subarray Sum >= K ---\n\n";
+
+    try {
+        runComparativeTest("Example 1 (Single Element)", {1}, 1, 1);
+
+        runComparativeTest("Example 2 (Impossible)", {1, 2}, 4, -1);
+
+        // Edge case where simple Two Pointers fail due to negative numbers.
+        runComparativeTest("Example 3 (Negative Elements)", {2, -1, 2}, 3, 3);
+
+        runComparativeTest("Edge Case 1 (Exact Sum Match)", {4, -1, 2, 3}, 4, 1);
+
+    } catch (const std::exception& e) {
+        cerr << "[Exception Caught] " << e.what() << endl;
+    }
+    return 0;
+}
