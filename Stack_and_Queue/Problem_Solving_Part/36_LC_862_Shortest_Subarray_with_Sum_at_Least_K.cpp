@@ -66,10 +66,10 @@ private:
         }
 
         void pop_front() {
-            head++;
+            ++head;
         }
         void pop_back() {
-            tail--;
+            --tail;
         }
         void push_back(size_t idx) {
             data[tail++] = idx;
@@ -101,7 +101,7 @@ public:
             }
 
             // 2. Maintain Monotonic Increasing property
-            while (!dq.empty() && P[i] <= P[dq.back()]) {
+            while (!dq.empty() && P[dq.back()] >= P[i]) {
                 dq.pop_back();
             }
 
