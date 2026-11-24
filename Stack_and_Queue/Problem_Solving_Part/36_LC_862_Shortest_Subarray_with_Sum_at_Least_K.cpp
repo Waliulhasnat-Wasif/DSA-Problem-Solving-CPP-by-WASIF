@@ -10,11 +10,6 @@ using std::endl;
 using std::string;
 using std::vector;
 
-// ==========================================
-// Approach 1: Baseline Architecture (Brute-Force Prefix Sum)
-// Proves the mathematical correctness of subarray sums.
-// Time Complexity: O(N^2) | Space Complexity: O(N)
-// ==========================================
 class SolutionBaseline {
 public:
     int shortestSubarray(const vector<int>& nums, int k) const {
@@ -39,13 +34,6 @@ public:
     }
 };
 
-// ==========================================
-// Approach 2: Ultra-Optimized Architecture (Monotonic Flat Deque)
-// FAANG Flex: Custom contiguous memory deque.
-// Popping from the back ensures Monotonic Increasing property.
-// Popping from the front locks in the shortest lengths.
-// Time Complexity: Strict O(N) | Space Complexity: O(N) contiguous
-// ==========================================
 class SolutionExtreme {
 private:
     struct FlatDeque {
@@ -80,32 +68,26 @@ public:
     int shortestSubarray(const vector<int>& nums, int k) const {
         size_t n = nums.size();
 
-        // Use long long for prefix sums to prevent overflow
         vector<long long> P(n + 1, 0);
         for (size_t i = 0; i < n; ++i) {
             P[i + 1] = P[i] + nums[i];
         }
 
-        // Initialize with an impossible length (n + 1)
         size_t min_len = n + 1;
         long long K = static_cast<long long>(k);
 
-        // Capacity is n + 1 because the prefix sum array has size n + 1
         FlatDeque dq(n + 1);
 
         for (size_t i = 0; i <= n; ++i) {
-            // 1. Lock in the shortest valid subarray from the front
             while (!dq.empty() && P[i] - P[dq.front()] >= K) {
                 min_len = std::min(min_len, i - dq.front());
                 dq.pop_front();
             }
 
-            // 2. Maintain Monotonic Increasing property
             while (!dq.empty() && P[dq.back()] >= P[i]) {
                 dq.pop_back();
             }
 
-            // 3. Push the current index
             dq.push_back(i);
         }
 
@@ -113,9 +95,6 @@ public:
     }
 };
 
-// ==========================================
-// Test Execution Engine
-// ==========================================
 string format_vector(const vector<int>& v) {
     if (v.empty()) {
         return "[]";
@@ -161,7 +140,6 @@ int main() {
 
         runComparativeTest("Example 2 (Impossible)", {1, 2}, 4, -1);
 
-        // Edge case where simple Two Pointers fail due to negative numbers.
         runComparativeTest("Example 3 (Negative Elements)", {2, -1, 2}, 3, 3);
 
         runComparativeTest("Edge Case 1 (Exact Sum Match)", {4, -1, 2, 3}, 4, 1);
